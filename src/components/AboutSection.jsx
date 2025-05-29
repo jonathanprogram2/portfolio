@@ -17,8 +17,8 @@ export default function AboutSection() {
 
                 {/* Right: Text */}
                 <div className="text-left max-w-xl mt-10 md:mt-0 md:ml-16">
-                    <p className="text-white text-lg leading-relaxed font-light">
-                     I'm an aspiring frontend engineer and full-stack web developer passionate about building dynamic, user-centered digital experiences. With a strong foundation in UI design and web technologies, I focus on crafting responsive, visually engaging interfaces while actively expanding my backend skills to support scalable, data-driven applications. I'm especially interested in the intersection of web development, financial data visualization, and modern tooling—continuously learning and building to grow into a well-rounded developer ready to contribute to innovative, fast-moving teams.
+                    <p className="text-white text-xl leading-relaxed font-light">
+                      I’m an aspiring frontend engineer and full-stack web developer passionate about crafting immersive, user-centered digital experiences. With a strong foundation in UI design and modern web technologies, I specialize in building responsive, visually dynamic interfaces that feel engaging and alive. I'm especially interested in 3D graphics, motion design, and enhanced visual animations—continuously learning new tools and techniques to bring bold ideas to life. As I grow my backend skills, I aim to become a well-rounded developer ready to contribute to creative, fast-moving teams building the future of the web.
                     </p>
                     <p className="mt-4 text-sm font-semibold text-blue-300 tracking wider">
                        ✱ BASED IN THE UNITED STATES
