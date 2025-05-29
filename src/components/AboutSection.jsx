@@ -18,7 +18,7 @@ export default function AboutSection() {
                 {/* Right: Text */}
                 <div className="text-left max-w-xl mt-10 md:mt-0 md:ml-16">
                     <p className="text-white text-lg leading-relaxed font-light">
-                    I’m an aspiring software engineer with a bold interest in bridging frontend engineering, user experience design, and financial data applications. As a computer science student, I’m dedicated to crafting intuitive, interactive web interfaces while actively expanding my skills in data visualization, fintech tools, and blockchain technologies. Through hands-on projects, I’ve begun blending design with data to create engaging digital experiences—building a foundation in both frontend development and the technical side of financial engineering. I’m eager to apply my creativity, curiosity, and growing expertise to innovative teams shaping the future of fintech, Web3, and data-driven platforms.
+                     I'm an aspiring frontend engineer and full-stack web developer passionate about building dynamic, user-centered digital experiences. With a strong foundation in UI design and web technologies, I focus on crafting responsive, visually engaging interfaces while actively expanding my backend skills to support scalable, data-driven applications. I'm especially interested in the intersection of web development, financial data visualization, and modern tooling—continuously learning and building to grow into a well-rounded developer ready to contribute to innovative, fast-moving teams.
                     </p>
                     <p className="mt-4 text-sm font-semibold text-blue-300 tracking wider">
                        ✱ BASED IN THE UNITED STATES
