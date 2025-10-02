@@ -4,24 +4,75 @@ const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export default function AboutSection() {
     return (
-        <section id="about" className="relative w-full min-h-screen flex items-center justify-center px-6 md:px-12 border-none">
-            {/* Spline Background */}
-                <Spline scene="https://prod.spline.design/pOn5sMDiRPgxoOTN/scene.splinecode" className="absolute top-0 left-0 w-full h-full z-0" />
-            
+        <section 
+            id="about" 
+            className="relative w-full min-h-screen flex items-center justify-center px-6 md:px-12 border-none"
+        > 
             {/* Content */}
-            <div className="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between px-6 md:px-12">
+            <div className="relative z-10 w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-10">
                 {/* Left: Image Box */}
-                <div className="bg-white text-black rounded-2xl p-6 shadow-xl max-w-md w-full">
-                    <img src={profilePic} alt="Jonathan Mirabal" className="rounded-xl w-full" />
+                <div className="bg-white/95 text-black rounded-2xl p-6 shadow-xl max-w-md w-full">
+                    <img 
+                        src={profilePic} 
+                        alt="Jonathan Mirabal" 
+                        className="rounded-xl w-full object-cover" 
+                    />
                 </div>
 
-                {/* Right: Text */}
                 <div className="text-left max-w-xl mt-10 md:mt-0 md:ml-16">
-                    <p className="text-white text-xl leading-relaxed font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                      I’m an aspiring frontend engineer and full-stack web developer passionate about crafting immersive, user-centered digital experiences. With a strong foundation in UI design and modern web technologies, I specialize in building responsive, visually dynamic interfaces that feel engaging and alive. I'm especially interested in 3D graphics, motion design, and enhanced visual animations—continuously learning new tools and techniques to bring bold ideas to life. As I grow my backend skills, I aim to become a well-rounded developer ready to contribute to creative, fast-moving teams building the future of the web.
+                    <h2 
+                        className="text-3xl md:text-5xl font-extrabold tracking-tight text-white/90 
+                                    drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)] mb-4"
+                    >
+                        About Me
+                    </h2>
+
+                    <p className="mt-4 text-white/90 text-xl leading-relaxed drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+                    I’m a <span className="font-semibold">frontend-first software engineer</span> who 
+                    loves turning ideas into fast, accessible, and polished web 
+                    interfaces. I enjoy clean UI, thoughtful details, and building
+                    components that are easy to reuse and scale.
                     </p>
-                    <p className="mt-4 text-sm font-semibold text-blue-300 tracking wider">
-                       ✱ BASED IN THE UNITED STATES
+
+                    <p className="mt-4 text-white/90 leading-relaxed text-lg drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+                    My everyday toolkit is <span className="font-semibold">React</span>,{" "}
+                    <span className="font-semibold">Next.js</span>,{" "}
+                    <span className="font-semibold">TypeScript</span>, and{" "}
+                    <span className="font-semibold">JavaScript</span>, and{" "}
+                    <span className="font-semibold">Tailwind CSS</span>. I care about
+                        accessibility, performance, and clear code — so the experience feels
+                        fast, readable, and reliable.
+                    </p>
+
+                    <ul className="mt-6 space-y-3 text-white/90 leading-relaxed text-base">
+                        <li className="flex gap-3">
+                            <span className="mt-[6px] h-2 w-2 rounded-full bg-white/70" />
+                            <span>
+                                <span className="font-medium">How I work:</span> Ship
+                                iteratively, name things clearly, document as I go, and keep PRs
+                                easy to read.
+                            </span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="mt-[6px] h-2 w-2 rounded-full bg-white/70" />
+                            <span>
+                                <span className="font-medium">What I value:</span> Simple
+                                architectures, predictable state, smooth interactions, and 
+                                designs that make information easy to scan.
+                            </span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="mt-[6px] h-2 w-2 rounded-full bg-white/70" />
+                            <span>
+                                <span className="font-medium">Where I'm headed:</span> Growing
+                                as a Frontend Engineer–deeper in accessibility, performance, and
+                                UI systems–with the range to own end-to-end products.
+                            </span>
+                        </li>
+                    </ul>
+
+                    <p className="mt-6 text-sm font-semibold text-blue-300/90 tracking wider">
+                    ✱ BASED IN THE UNITED STATES
                     </p>
                 </div>
             </div>
