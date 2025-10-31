@@ -1,3 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer utilities {
+    /* animation speeds */
+    .animate-first { animation: moveVertical 30s ease infinite; }
+    .animate-second { animation: moveInCircle 20s linear infinite; }
+    .animate-third { animation: moveInCircle 40s linear infinite; }
+    .animate-fourth { animation: moveHorizontal 40s ease infinite; }
+    .animate-fifth { animation: moveInCircle 20s ease infinite; }
+}
+
 html, body {
     background: transparent !important;
     margin: 0;
@@ -15,25 +30,24 @@ html, body {
     font-style: normal;
 }
 
-@keyframes wave {
-    0% { transform: rotate( 0.0deg) }
-    10% { transform: rotate(14.0deg) }
-    20% { transform: rotate(-8.0deg) }
-    30% { transform: rotate(14.0deg) }
-    40% { transform: rotate(-4.0deg) }
-    50% { transform: rotate(10.0deg) }
-    60% { transform: rotate( 0.0deg) }
-    100% { transform: rotate( 0.0deg) }
+@keyframes moveVertical {
+    0% { transform: translateY( 0%) }
+    50% { transform: translateY(-10%) }
+    100% { transform: translateY(0%) }
 }
 
-.animate-wave {
-    display: inline-block;
-    animation: wave 1s ease-in-out;
-    transform-origin: 70% 70%;
+@keyframes moveHorizontal {
+    0% { transform: translateX( 0%) }
+    50% { transform: translateX(10%) }
+    100% { transform: translateX(0%) }
+
 }
 
+@keyframes moveInCircle {
+    0% { transform: rotate(0deg) translate(40px) rotate(0deg); }
+    50% { transform: rotate(180deg) translate(40px) rotate(-180deg); }
+    100% { transform: rotate(360deg) translate(40px) rotate(-360deg);  }
+    
+}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 

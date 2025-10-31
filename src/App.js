@@ -1,71 +1,75 @@
-import { useState, useEffect, useRef, Suspense } from "react";
-import EnterScreen from "./components/EnterScreen";
-import HeroSection from "./components/HeroSection";
-import AboutSection from "./components/AboutSection";
-import AnimatedBotSection from "./components/AnimatedBotSection";
-import ProjectsSection from "./components/ProjectsSection";
-import BottomNavBar from "./components/BottomNavBar";
-import FixedTopUI from "./components/FixedTopUI";
-import soundFile from "./assets/uimusic.mp3";
-import CustomCursor from "./components/CustomCursor";
-import Spline from "@splinetool/react-spline";
+import React from "react";
+import ReactFullpage from "@fullpage/react-fullpage";
+import TopNav from "./components/TopNavBar";
+import HeroSection from "./components/sections/HeroSection";
+import AboutSection from "./components/sections/AboutSection";
+import WorkSection from "./components/sections/WorkSection";
+import ServicesSection from "./components/sections/ServicesSection";
+import ContactSection from "./components/sections/ContactSection";
+import FooterSection from "./components/sections/FooterSection";
+import "./App.css";
 
+const ANCHORS = ["home", "about", "work", "services", "contact", "footer"];
 
 export default function App() {
-  const [entered, setEntered] = useState(false);
-  const [soundOn, setSoundOn] = useState(true);
-  const audioRef = useRef(null); 
-
-  useEffect(() => {
-    if (entered) {
-      if (!audioRef.current) {
-        audioRef.current = new Audio(soundFile);
-        audioRef.current.loop = true;
-        audioRef.current.volume = 0.6;
-
-      }
-      
-      if (soundOn) {
-        audioRef.current.play(). catch((err) => {
-          console.log("Autoplay failed:", err);
-
-      });
-    } else {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-  }
-  }, [entered, soundOn]);
-
-  useEffect(() => {
-    if (entered) {
-      document.body.classList.add("entered-mode");
-    } else {
-      document.body.classList.remove("entered-mode");
-    }
-  }, [entered]);
-
   return (
     <>
-      {!entered && <EnterScreen onEnter={() => setEntered(true)} />} 
-      {entered && (
-          <div className="relative font-sans text-white bg-transparent overflow-x-hidden scroll-smooth">
-            <Suspense fallback={null}>
-              <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none">
-                <Spline scene="https://prod.spline.design/LY2jkTzWSL294mW9/scene.splinecode" className="w-full h-full" />
-              </div>
-            </Suspense>
+      {/* Sticky top nav that ties into fullPage via the #menu id */}
+      <TopNav anchors={ANCHORS} />
 
-            <CustomCursor />
-            <FixedTopUI  
-              soundOn={soundOn}
-              toggleSound={() => setSoundOn((prev) => !prev)} />
-            <HeroSection entered={entered} />
-            <AboutSection />
-            <ProjectsSection />
-            <BottomNavBar />  
-          </div>
-      )}
+      <ReactFullpage
+        licenseKey={"OPEN-SOURCE-GPLV3-LICENSE"}
+        anchors={ANCHORS}
+        navigation={false}
+        scrollBar={true}
+        autoScrolling={false}
+        navigationPosition="right"
+        scrollingSpeed={900}
+        fitToSection={false}
+        responsiveWidth={1024}
+        responsiveHeight={600}
+        scrollOverflow={false}
+        controlArrows={false}
+        slidesNavigation={false}
+        menu="#menu"
+        // Good defaults for mobile
+        normalScrollElements={".allow-scroll"}
+        render={() => {
+          return (
+            <ReactFullpage.Wrapper>
+              {/* SECTION 1 — HERO */}
+              <div className="section">
+                <HeroSection />
+              </div>
+
+              {/* SECTION 2 — ABOUT */}
+              <div className="section">
+                <AboutSection />
+              </div>
+
+              {/* SECTION 3 — WORK with HORIZONTAL SLIDES */}
+              <div className="section">
+                <WorkSection />
+              </div>
+
+              {/* SECTION 4 — SERVICES with HORIZONTAL SLIDES */}
+              <div className="section">
+                <ServicesSection />
+              </div>
+
+              {/* SECTION 5 — CONTACT */}
+              <div className="section">
+                <ContactSection />
+              </div>
+
+              {/* SECTION 6 — FOOTER */}
+              <div className="section">
+                <FooterSection />
+              </div>
+            </ReactFullpage.Wrapper>
+          );
+        }}
+      />
     </>
   );
 }    
