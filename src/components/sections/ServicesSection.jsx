@@ -53,8 +53,8 @@ function ServiceCard({ eyebrow, title, price, bullets = [], note, cta = "Lock in
 
 export default function ServicesSection() {
     return (
-        <section className="h-full w-full bg-[#000000] mt-48 md:mt-64 text-white flex items-center">
-            <div className="w-full max-w-[1200px] mx-auto px-6 py-10">
+        <section className="w-full bg-[#000000] scroll-mt-28 md:scroll-mt-40 mt-10 md:mt-16 text-white ">
+            <div className="w-full max-w-[1200px] mx-auto px-6 pt-20 pb-[120px] md:pb-[160px]">
                 {/* label + heading */}
                 <div className="text-center mb-2">
                     <span className="chip-anim">

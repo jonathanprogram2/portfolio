@@ -5,17 +5,9 @@ export default function TopNav({ anchors = [] }) {
 
     return (
         <div className="fixed top-5 left-1/2 -translate-x-1/2 z-[100] w-[min(1100px,92vw)]">
-            <div
-                className="
-                    flex items-center justify-between
-                    rounded-full
-                    border border-white/15
-                    bg-[#4D1818]
-                    backdrop-blur-xl
-                    shadow-[0_10px_40px_rgba(0,0,0,0.35)]
-                    px-5 sm:px-6 py-3
-                "
-            >
+            <div className="nav-glass relative flex items-center justify-between rounded-full px-5 sm:px-6 py-3">
+                <span className=" nav-shine pointer-events-none absolute inset-0 rounded-full" aria-hidden />
+        
                 {/* LEFT: menu list controlled by fullPage.js */}
                 <ul id="menu" className="flex items-center gap-6 sm:gap-8">
                     <li data-menuanchor={about}>
@@ -48,12 +40,12 @@ export default function TopNav({ anchors = [] }) {
                 <a
                     href={`#${home || "home"}`}
                     className="
-                     pointer-events-auto
-                     absolute left-1/2 -translate-x-1/2
-                     text-white tracking-wider font-semibold
+                     brand absolute left-1/2 -translate-x-1/2
+                     font-brand font-extrabold tracking-[0.06em]
+                     text-white/95
                     "
                 >
-                    JAMX <span className="opacity-80">STUDIOS</span>     
+                    JAMX <span className="opacity-85">STUDIOS</span>     
                 </a>
 
                 {/* RIGHT: CTA */}

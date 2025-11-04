@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef }from 'react';
-import { contain } from 'three/src/extras/TextureUtils.js';
+
 
 // minimal project data - swap/extend as you like
 const PROJECTS = [
@@ -37,7 +37,6 @@ export default function WorkSection() {
     // perf refs
     const targetX = useRef(0);
     const currentX = useRef(0);
-    const animating = useRef(false);
     const reqId = useRef(0);
     const progressScale = useRef(0);
     const progressTarget = useRef(0);
@@ -45,10 +44,15 @@ export default function WorkSection() {
     const seqW = useRef(0);
     const buffer = 2;    // clones before/after
     const smooth = 0.08; // lerp factor
-    const touchVelocity = useRef(0);
     const isDown = useRef(false);
     const lastTouchX = useRef(0);
     const lastTouchT = useRef(0);
+    const vel = useRef(0);  // current horizontal velocity
+    const running = useRef(false); // is the RAF loop running
+    const maxVel = 65;             // clamp wheel/touch velocity
+    const friction = 0.90;         // deecay per frame
+    const pxPerStep = 1.0;         // velocity -> px/frame scale
+
 
     useEffect(() => {
         const container = containerRef.current;
@@ -146,50 +150,60 @@ export default function WorkSection() {
             lastPct.current = pct;
         };
 
-        const animate = (forceReset = false) => {
-            currentX.current = lerp(currentX.current, targetX.current, smooth);
-            scroller.style.transform = `translate3d(-${currentX.current}px,0,0)`;
+        // single RAF loop that runs while there is velocity
+        const startLoop = () => {
+            if (running.current) return;
+            running.current = true;
 
-            updateProgress(forceReset);
-            if (!forceReset) {
-                progressScale.current = lerp(progressScale.current, progressTarget.current, smooth);
-            }
-            bar.style.transform = `scaleX(${progressScale.current})`;
+            const tick = () => {
+                if (Math.abs(vel.current) > 0.02) {
+                    // update target by velocity
+                    targetX.current += vel.current * pxPerStep;
 
-            if (Math.abs(targetX.current - currentX.current) > 0.1) {
-                animating.current = true;
-                reqId.current = requestAnimationFrame(() => animate(false));
-            } else {
-                animating.current = false;
-            }
-        };
+                    // keep the infinite track seamless
+                    const needsReset = checkBoundary();
+                    if (needsReset) updateProgress(true);
+
+                    // smooth follow to target
+                    currentX.current += (targetX.current - currentX.current) * smooth;
+
+                    // translate using integer pixels to reduce paint shimmer
+                    scroller.style.transform = `translate3d(-${Math.round(currentX.current)}px,0,0)`;
+
+                    // progress bar/counter
+                    updateProgress(false);
+                    progressScale.current += (progressTarget.current - progressScale.current) * smooth;
+                    bar.style.transform = `scaleX(${progressScale.current})`;
+
+                    // friction
+                    vel.current *= friction;
+
+                    reqId.current = requestAnimationFrame(tick);
+                } else {
+                    running.current = false;
+                    vel.current = 0;
+                }
+            };
+
+            reqId.current = requestAnimationFrame(tick);
+        }
+
+       
 
         // init
         setup();
 
-        let wheelTimeout;
         // wheel
         const onWheel = (e) => {
 
-            const dx = Math.abs(e.deltaX);
-            const dy = Math.abs(e.deltaY);
+            const absX = Math.abs(e.deltaX);
+            const absY = Math.abs(e.deltaY);
 
-            if (dy > dx) return;
+            if (absY > absX) return;
 
             e.preventDefault();
-            
-            targetX.current += e.deltaX * 1.2;
-
-            const needsReset = checkBoundary();
-            clearTimeout(wheelTimeout)
-            if (!animating.current) {
-                animating.current = true;
-                reqId.current = requestAnimationFrame(() => animate(needsReset));
-            }
-
-            wheelTimeout = setTimeout(() => {
-                animating.current = false;
-            }, 100);
+            vel.current = Math.max(-maxVel, Math.min(maxVel, vel.current + e.deltaX)); // adds wheel impulse
+            startLoop(); // Kick / keep the RAF loop running
         };
 
        
@@ -201,17 +215,14 @@ export default function WorkSection() {
             const STEP = 120;  // tweak step size
             if (e.key === 'ArrowRight') {
                 e.preventDefault();
-                targetX.current += STEP;
+                vel.current = Math.max(-maxVel, Math.min(maxVel, vel.current + 24));
+                startLoop();
             } else if (e.key === 'ArrowLeft') {
                 e.preventDefault();
-                targetX.current -= STEP;
+                vel.current = Math.max(-maxVel, Math.min(maxVel, vel.current - 24));
+                startLoop();
             } else {
                 return;
-            }
-            const needsReset = checkBoundary();
-            if (!animating.current) {
-                animating.current = true;
-                reqId.current = requestAnimationFrame(() => animate(needsReset));
             }
         };
 
@@ -225,43 +236,27 @@ export default function WorkSection() {
             isDown.current = true;
             lastTouchX.current = (e.touches ? e.touches[0].clientX : e.clientX);
             lastTouchT.current = performance.now();
-            targetX.current = currentX.current;
-            touchVelocity.current = 0;
+            vel.current = 0;
         };
         const onMove = (e) => {
             if (!isDown.current) return;
             e.preventDefault();
             const x = (e.touches ? e.touches[0].clientX : e.clientX);
             const dx = lastTouchX.current - x;
-            targetX.current += dx * 2.5;
 
-            const t = performance.now();
-            const dt = t - lastTouchT.current;
-            if (dt > 0) touchVelocity.current = (dx / dt) * 16;
+            const now = performance.now();
+            const dt = Math.max(1, now - lastTouchT.current);
+
+            // normalize to roughly px per 16ms frame and clamp
+            vel.current = Math.max(-maxVel, Math.min(maxVel, (dx / dt) * 16));
+
             lastTouchX.current = x;
-            lastTouchT.current = t;
+            lastTouchT.current = now;
 
-            const needsReset = checkBoundary();
-            if (!animating.current) {
-                animating.current = true;
-                reqId.current = requestAnimationFrame(() => animate(needsReset));
-            }
+            startLoop();
         };
         const onEnd = () => {
             isDown.current = false;
-            // simple inertial tail
-            if (Math.abs(touchVelocity.current) > 0.1) {
-                const decay = () => {
-                    touchVelocity.current *= 0.94;
-                    if (Math.abs(touchVelocity.current) > 0.1) {
-                        targetX.current += touchVelocity.current * 14;
-                        const needsReset = checkBoundary();
-                        if (needsReset) updateProgress(true);
-                        reqId.current = requestAnimationFrame(decay);
-                    }
-                };
-                reqId.current = requestAnimationFrame(decay);
-            }
         };
 
         const onDelegatedClick = (e) => {
@@ -280,6 +275,8 @@ export default function WorkSection() {
             if (href) window.open(href, '_blank', 'noopener,noreferrer');
         };
 
+        const focusOnEnter = () => container.focus();
+
         scroller.addEventListener('click', onDelegatedClick);
         scroller.addEventListener('keydown', onDelegatedKey);
 
@@ -288,6 +285,8 @@ export default function WorkSection() {
         container.addEventListener('touchstart', onStart, { passive: true });
         container.addEventListener('touchmove', onMove, { passive: false });
         container.addEventListener('touchend', onEnd, { passive: true });
+        container.addEventListener('mouseenter', focusOnEnter);
+
         // pointer (desktop drag)
         container.addEventListener('mousedown', onStart);
         window.addEventListener('mousemove', onMove);
@@ -310,12 +309,12 @@ export default function WorkSection() {
             container.removeEventListener('touchend', onEnd);
             container.removeEventListener('mousedown', onStart);
             container.removeEventListener('keydown', onKey);
-            container.removeEventListener('mouseenter', () => container.focus());
             window.removeEventListener('mousemove', onMove);
             window.removeEventListener('mouseup', onEnd);
             window.removeEventListener('resize', onResize);
             scroller.removeEventListener('click', onDelegatedClick);
             scroller.removeEventListener('keydown', onDelegatedKey);
+            container.removeEventListener('mouseenter', focusOnEnter);
             cancelAnimationFrame(rafId);
         };
     }, []);
@@ -353,7 +352,6 @@ export default function WorkSection() {
                             className="ihs-section base ihs-hero project-slide" 
                             style={{ '--img-pos': p.imgPos || '50% 50%' }} 
                             role="link" 
-                            onClick={() => window.open(p.href, '_blank', 'noopener,noreferrer')}
                             data-href={p.href}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
@@ -362,7 +360,7 @@ export default function WorkSection() {
                                 }
                             }}
                         >
-                            <img src={p.img} alt={p.title} draggable="false" />
+                            <img src={p.img} alt={p.title} draggable="false" loading="lazy" decoding="async" />
                         </section>
                     ))}
 

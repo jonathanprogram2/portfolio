@@ -58,12 +58,12 @@ export default function App() {
               </div>
 
               {/* SECTION 5 — CONTACT */}
-              <div className="section">
+              <div className="section fp-auto-height">
                 <ContactSection />
               </div>
 
               {/* SECTION 6 — FOOTER */}
-              <div className="section">
+              <div className="section fp-auto-height">
                 <FooterSection />
               </div>
             </ReactFullpage.Wrapper>

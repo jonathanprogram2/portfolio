@@ -18,7 +18,7 @@ export default function ContactSection() {
         const newErrors = {};
         if (!form.company.trim()) newErrors.company = "Company cannot be empty";
         if (!form.name.trim()) newErrors.name = "Name cannot be empty";
-        if (!/\S+@\S+\. \S+/.test(form.email))
+        if (!/\S+@\S+\.\S+/.test(form.email))
             newErrors.email = "Invalid email";
         if (!form.message.trim())
             newErrors.message = "Message cannot be empty";
@@ -26,17 +26,32 @@ export default function ContactSection() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (validate()) {
-            alert("Form submitted successfully 🚀");
+        if (!validate()) return;
+
+        try {
+            setSubmitting(true);
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.ok) throw new Error(data?.error || "Failed");
+            setSent(true);
             setForm({ company: "", name: "", email: "", message: "" });
+        } catch (err) {
+            alert("Sorry—something went wrong sending your message.");
+            console.error(err);
+        } finally {
+            setSubmitting(false);
         }
     };
 
     return (
-        <section className="h-full w-full bg-[#000000] text-white flex items-center">
-            <div className="w-full max-w-[1200px] mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10">
+        <section id="contact" className="w-full bg-[#000000] scroll-mt-28 md:scroll-mt-36 text-white pt-16 md:pt-28">
+            <div className="w-full max-w-[1200px] mx-auto px-6 pt-10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-10">
                 {/* Left side */}
                 <div className="max-w-md">
                     <motion.span
@@ -121,12 +136,6 @@ export default function ContactSection() {
                     </div>
 
                     <div className="flex items-center justify-between mt-6">
-                        <a
-                            href="mailto:jonathan.a.mirabal@gmail.com"
-                            className="text-white/70 text-sm hover:text-white transition"
-                        >
-                            ✉ hello@jamstudios.com
-                        </a>
                         <motion.button
                             whileHover={{ scale: 1.05, boxShadow: "0 0 20px #b293ff" }}
                             whileTap={{ scale: 0.97 }}

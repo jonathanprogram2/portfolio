@@ -11,8 +11,8 @@ const LINKS = [
 
 export default function FooterSection() {
     return (
-        <section className=" w-full bg-[#000000] pt-1 md:pt-5 text-white">
-            <div className="w-full max-w-[1200px] mx-auto px-6 py-10 md:py-14">
+        <section id="footer" className="section w-full fp-auto-height bg-[#000000] pt-10 md:pt-14 text-white">
+            <div className="w-full max-w-[1200px] mx-auto px-6 py-12 md:py-16">
                 {/* top divider */}
                 <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
