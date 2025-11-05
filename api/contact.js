@@ -30,8 +30,8 @@ module.exports = async (req, res) => {
         `;
 
         await resend.emails.send({
-            from: "JAMX Studios <onboarding@resend.dev>",
-            to: ["jamxstudios@outlook.com"],
+            from: "JAMX Studios <jonathan.a.mirabal@gmail.com>",
+            to: "jonathan.a.mirabal@gmail.com",
             replyTo: email,
             subject,
             text,
