@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function ContactSection() {
@@ -23,7 +23,7 @@ export default function ContactSection() {
             if (name === "email") {
                 const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
                 if (ok) delete next.email;
-                else next.emial = "Invalid email";
+                else next.email = "Invalid email";
             } else {
                 if (value.trim()) delete next[name];
                 else next[name] = `${name[0].toUpperCase()+name.slice(1)} cannot be empty`;
