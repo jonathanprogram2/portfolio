@@ -160,18 +160,18 @@ export default function ContactSection() {
                         )}
                     </div>
 
-                    <div className="flex items-center justify-between mt-6">
+                    <div className="flex items-center justify-between mt-6 gap-4">
                         <motion.button
-                            whileHover={{ scale: 1.05, boxShadow: "0 0 20px #b293ff" }}
-                            whileTap={{ scale: 0.97 }}
+                            whileHover={{ scale: sent ? 1 : 1.05, boxShadow: sent ? undefined : "0 0 20px #b293ff" }}
+                            whileTap={{ scale: sent ? 1 : 0.97 }}
                             type="submit"
-                            disabled={submitting}
-                            className={`relative px-6 py-2 rounded-xl font-semibold bg-white text-black flex items-center gap-2 shadow-[0_8px_25px_rgba(255,255,255,0.1)] transition ${
-                              submitting ? "opacity-60 cursor-not-allowed" : ""
+                            disabled={submitting || sent}
+                            className={`relative px-6 py-2 rounded-xl font-semibold bg-white text-black flex items-center gap-2 shadow-[0_8px_25px_rgba(255,255,255,0.1)] transition 
+                                ${(submitting || sent) ? "opacity-60 cursor-not-allowed" : ""
                             }`}
                         >
-                            {submitting ? "Sending..." : "Contact us"}
-                            {!submitting && (
+                            {sent ? "Sent!" : submitting ? "Sending..." : "Contact us"}
+                            {!submitting && !sent && (
                                 <motion.span
                                     animate={{ y: [0, -3, 0] }}
                                     transition={{ repeat: Infinity, duration: 1.8 }}
@@ -179,9 +179,10 @@ export default function ContactSection() {
                                     🚀
                                 </motion.span>
                             )}
+                            {sent && <span>✅</span>}
                         </motion.button>
                         {sent && (
-                            <p className="text-green-400 text-sm mt-3">
+                            <p className="text-green-400 text-sm ml-4">
                                 Thanks! Your message was sent. We'll get back to you soon.
                             </p>
                         )}
