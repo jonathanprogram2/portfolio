@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function ContactSection() {
@@ -9,19 +9,39 @@ export default function ContactSection() {
         message: "",
     });
     const [errors, setErrors] = useState({});
+    const [submitting, setSubmitting] = useState(false);
+    const [sent, setSent] = useState(false);
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setForm(prev => ({ ...prev, [name]: value }));
+
+        // clear/update error for this field
+        setErrors(prev => {
+            const next = { ...prev };
+
+            if (name === "email") {
+                const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+                if (ok) delete next.email;
+                else next.emial = "Invalid email";
+            } else {
+                if (value.trim()) delete next[name];
+                else next[name] = `${name[0].toUpperCase()+name.slice(1)} cannot be empty`;
+            }
+
+            return next;
+        });
     };
 
     const validate = () => {
         const newErrors = {};
+        const email = form.email.trim();
+
         if (!form.company.trim()) newErrors.company = "Company cannot be empty";
         if (!form.name.trim()) newErrors.name = "Name cannot be empty";
-        if (!/\S+@\S+\.\S+/.test(form.email))
-            newErrors.email = "Invalid email";
-        if (!form.message.trim())
-            newErrors.message = "Message cannot be empty";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = "Invalid email";
+        if (!form.message.trim()) newErrors.message = "Message cannot be empty";
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -32,18 +52,23 @@ export default function ContactSection() {
 
         try {
             setSubmitting(true);
+            setSent(false);
+
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),
             });
+
             const data = await res.json();
             if (!res.ok || !data.ok) throw new Error(data?.error || "Failed");
+
             setSent(true);
             setForm({ company: "", name: "", email: "", message: "" });
         } catch (err) {
-            alert("Sorry—something went wrong sending your message.");
             console.error(err);
+            alert("Sorry—something went wrong sending your message.");
+            setSent(false);
         } finally {
             setSubmitting(false);
         }
@@ -140,16 +165,26 @@ export default function ContactSection() {
                             whileHover={{ scale: 1.05, boxShadow: "0 0 20px #b293ff" }}
                             whileTap={{ scale: 0.97 }}
                             type="submit"
-                            className="relative px-6 py-2 rounded-xl font-semibold bg-white text-black flex items-center gap-2 shadow-[0_8px_25px_rgba(255,255,255,0.1)] transition"
+                            disabled={submitting}
+                            className={`relative px-6 py-2 rounded-xl font-semibold bg-white text-black flex items-center gap-2 shadow-[0_8px_25px_rgba(255,255,255,0.1)] transition ${
+                              submitting ? "opacity-60 cursor-not-allowed" : ""
+                            }`}
                         >
-                            Contact us
-                            <motion.span
-                                animate={{ y: [0, -3, 0] }}
-                                transition={{ repeat: Infinity, duration: 1.8 }}
-                            >
-                                🚀
-                            </motion.span>
+                            {submitting ? "Sending..." : "Contact us"}
+                            {!submitting && (
+                                <motion.span
+                                    animate={{ y: [0, -3, 0] }}
+                                    transition={{ repeat: Infinity, duration: 1.8 }}
+                                >
+                                    🚀
+                                </motion.span>
+                            )}
                         </motion.button>
+                        {sent && (
+                            <p className="text-green-400 text-sm mt-3">
+                                Thanks! Your message was sent. We'll get back to you soon.
+                            </p>
+                        )}
                     </div>
                 </form>
             </div>
