@@ -20,7 +20,13 @@ module.exports = async (req, res) => {
                 user: process.env.SMTP_USER,  
                 pass: process.env.SMTP_PASS, 
             },
+            tls: {
+                // helpful on servless, lets STARTTLS upgrade properly
+                ciphers: "TLSv1.2",
+            }
         });
+
+        await transporter.verify();
 
         const subject = `New JAMX inquiry: ${name} (${company})`;
         const text =
@@ -39,7 +45,7 @@ module.exports = async (req, res) => {
         `;
 
         await transporter.sendMail({
-            from: process.env.FROM_EMAIL || process.env.SMTP_USER,
+            from: process.env.SMTP_USER,
             to: process.env.TO_EMAIL || "jamxstudios@outlook.com",
             replyTo: email,
             subject,
@@ -50,6 +56,8 @@ module.exports = async (req, res) => {
         return res.status(200).json({ ok: true });
     } catch (err) {
         console.error("contact api error:", err);
+        // in prod keep it geenric; in preview/dev return message to help debug
+        const safe = process.env.VERCEL_ENV === "production" ? "Email failed" : (err?.message || "Email failed");
         return res.status(500).json({ ok: false, error: "Email failed" });
     }
 };
