@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 module.exports = async (req, res) => {
     if (req.method !== "POST") {
@@ -11,22 +11,7 @@ module.exports = async (req, res) => {
             return res.status(400).json({ ok: false, error: "Missing fields" });
         }
 
-        // Create SMTP transporter (Outlook / Office365)
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT || 587),
-            secure: false,
-            auth: {
-                user: process.env.SMTP_USER,  
-                pass: process.env.SMTP_PASS, 
-            },
-            tls: {
-                // helpful on servless, lets STARTTLS upgrade properly
-                ciphers: "TLSv1.2",
-            }
-        });
-
-        await transporter.verify();
+        const resend = new Resend(process.env.RESEND_API_KEY);
 
         const subject = `New JAMX inquiry: ${name} (${company})`;
         const text =
@@ -44,9 +29,9 @@ module.exports = async (req, res) => {
             <pre style="white-space:pre-wrap;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;">${message}</pre>
         `;
 
-        await transporter.sendMail({
-            from: process.env.SMTP_USER,
-            to: process.env.TO_EMAIL || "jamxstudios@outlook.com",
+        await resend.emails.send({
+            from: "JAMX Studios <onboarding@resend.dev>",
+            to: ["jamxstudios@outlook.com"],
             replyTo: email,
             subject,
             text,
@@ -56,8 +41,6 @@ module.exports = async (req, res) => {
         return res.status(200).json({ ok: true });
     } catch (err) {
         console.error("contact api error:", err);
-        // in prod keep it geenric; in preview/dev return message to help debug
-        const safe = process.env.VERCEL_ENV === "production" ? "Email failed" : (err?.message || "Email failed");
         return res.status(500).json({ ok: false, error: "Email failed" });
     }
 };
