@@ -1,6 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { getGPUTier } from "detect-gpu";
 import SuperformulaBackground from "../SuperformulaBackground";
 
 
