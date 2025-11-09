@@ -51,7 +51,7 @@ export default function FooterSection() {
 
                 {/* bottom row */}
                 <div className="pt-6 flex items-center justify-between gap-6 flex-wrap text-sm text-white/60">
-                    <span>© {new Date().getFullYear()} JAM STUDIOS</span>
+                    <span>© {new Date().getFullYear()} JAMX STUDIOS</span>
 
                     {/* socials */}
                     <div className="flex items-center gap-5">

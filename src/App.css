@@ -1140,7 +1140,7 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 @media (max-width: 900px){ :root { --nav-h: 56px; } }
 #contact { padding-top: calc(var(--nav-h) + 24px);}
 
-/* ==================================== Nav bar ====================================================================*/
+/* ==================================== Nav bar ============================================================================================*/
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&display=swap');
 
 :root { --nav-h: 72px; }
@@ -1358,4 +1358,13 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
   80% { -webkit-transform: scale(0) rotate(45deg); opacity: 0.5;}
   81% { -webkit-transform: scale(4) rotate(45deg); opacity: 1;}
   100% { -webkit-transform: scale(50) rotate(45deg); opacity: 0;}
+}
+
+@media (max-width: 900px) {
+    .jamx-mobile-nav-glass {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+      backdrop-filter: blur(18px);
+    }
 }

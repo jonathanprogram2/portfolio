@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import myLogo from "../assets/mylogo.png";
 
 // tiny inline envelope icon (no extra deps)
 function EnvelopeIcon({ className = "w-5 h-5"}) {
@@ -79,21 +80,21 @@ export default function TopNav({ anchors = [] }) {
                 aria-label="Main navigation"
                 className={[
                     // MOBILE: centered in the middle of the screen
-                    "fixed z-[100] max-[900px]:left-1/2 max-[900px]:top-[64px] max-[900px]:-translate-x-1/2",
-                    "max-[900px]:w-[min(260px,82vw)]",       // small pill on mobile
+                    "fixed z-[100] max-[900px]:left-3 max-[900px]:top-[10%] max-[900px]:translate-y-0",
+                    "max-[900px]:w-[84px]",       // small pill on mobile
                     // DESKTOP: back to top bar
                     "min-[901px]:top-[max(12px,env(safe-area-inset-top))] min-[901px]:left-1/2 min-[901px]:-translate-x-1/2 min-[901px]:translate-y-0",
                     "min-[901px]:w-[min(1100px,92vw)]",
                 ].join(" ")}
             >
                 {/* Glass pill */}
-                <div className="nav-glass nav-glass--fx rounded-[22px] px-3 py-1.5 min-[901px]:rounded-[26px] min-[901px]:px-6 min-[901px]:py-2.5 relative jamx-nav">
+                <div className="nav-glass nav-glass--fx rounded-[26px] px-3 py-2.5 max-[900px]:rounded-[999px] max-[900px]:px-2 max-[900px]:py-4 relative jamx-nav jamx-mobile-nav-glass">
                     <span className="nav-shine pointer-events-none absolute inset-0 rounded-[inherit]" aria-hidden />
 
                     {/* Make this a 3-column GRID */}
-                    <div className="grid grid-cols-[auto_1fr_auto] gap-3 min-[901px]:gap-4 items-center text-white">
+                    <div className="min-[901px]:grid min-[901px]:grid-cols-[auto_1fr_auto] min-[901px]:gap-4 max-[900px]:flex max-[900px]:flex-col max-[900px]:gap-3 max-[900px]:items-center items-center text-white">
                         {/* LEFT: mobile hamburger / desktop inline menu */}
-                        <div className="flex items-center">
+                        <div className="flex items-center min-[901px]:gap-3">
                             {/* mobile hamburger */}
                             <button
                                 type="button"
@@ -149,35 +150,52 @@ export default function TopNav({ anchors = [] }) {
                         </div>
 
                         {/* CENTER BRAND */}
-                        <div className="justify-self-center min-[901px]:mr-32">
+                        <div 
+                            className="justify-self-center min-[901px]:mr-2 max-[900px]:flex max-[900px]:flex-col max-[900px]:items-center max-[900px]:gap-3
+                            "
+                        >
                             <a
                                 href={`#${home || "home"}`}
-                                onClick={(e)=>{ e.preventDefault(); handleNav(home || "home"); }}
-                                className="justify-self-center brand font-brand font-extrabold tracking-[0.06em] text-white/95"
+                                onClick={(e)=>{ e.preventDefault(); handleNav(home || "home"); 
+
+                                }}
+                                className="hidden min-[901px]:inline-block brand font-brand font-extrabold tracking-[0.06em] text-white/95 "
                             >
                                 JAMX <span className="opacity-85">STUDIOS</span>     
                             </a>
-                        </div>
 
-                        {/* RIGHT: CTA & Mobile envelope */}
-                        <div className="justify-self-end">
-                            <a
-                                data-menuanchor={contact}
-                                href={`#${contact || "contact"}`}
-                                onClick={(e)=>{ e.preventDefault(); handleNav(contact || "contact"); }}
-                                className="hidden min-[901px]:inline-block nav-cta pulse-cta px-4 md:px-5 py-2 text-white font-semibold rounded-full"
-                            >
-                                <span className="icon-glow">Contact me</span>
-                            </a>
+                            {/* Mobile Logo */}
+                            <img
+                                src={myLogo}
+                                alt="JAMX Studios logo"
+                                className="
+                                    max-[900px]:block min-[901px]:hidden
+                                    w-10 h-10 object-contain
+                                "
+                            />
 
                             {/* mobile envelope icon */}
                             <button
                                 onClick={() => handleNav(contact || "contact")}
                                 aria-label="Contact"
-                                className="min-[901px]:hidden inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-teal-300"
+                                className="min-[901px]:hidden inline-flex h-7 w-7 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-teal-300"
                             >
                                 <EnvelopeIcon className="w-5 h-5" />
                             </button>
+                        </div>
+
+                        {/* RIGHT: CTA */}
+                        <div className="justify-self-end max-[900px]:hidden">
+                            <a
+                                data-menuanchor={contact}
+                                href={`#${contact || "contact"}`}
+                                onClick={(e)=>{ e.preventDefault(); handleNav(contact || "contact"); }}
+                                className="nav-cta pulse-cta px-4 md:px-5 py-2 text-white font-semibold rounded-full"
+                            >
+                                <span className="icon-glow">Contact me</span>
+                            </a>
+
+                            
                         </div>
                     </div>
                         
@@ -186,7 +204,7 @@ export default function TopNav({ anchors = [] }) {
                     {open && (
                         <div 
                             className="
-                                min-[901px]:hidden absolute left-2 right-2 top-full mt-2
+                                min-[901px]:hidden absolute left-full top-0 ml-3
                                 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-md p-2
                             "
                         >
