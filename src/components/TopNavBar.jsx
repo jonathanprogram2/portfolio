@@ -79,8 +79,8 @@ export default function TopNav({ anchors = [] }) {
                 aria-label="Main navigation"
                 className={[
                     // MOBILE: centered in the middle of the screen
-                    "fixed z-[100] max-[900px]:left-1/2 max-[900px]:top-[max(12px,env(safe-area-inset-top))] max-[900px]:-translate-x-1/2",
-                    "max-[900px]:w-[min(320px,92vw)]",       // small pill on mobile
+                    "fixed z-[100] max-[900px]:left-1/2 max-[900px]:top-[64px] max-[900px]:-translate-x-1/2",
+                    "max-[900px]:w-[min(260px,82vw)]",       // small pill on mobile
                     // DESKTOP: back to top bar
                     "min-[901px]:top-[max(12px,env(safe-area-inset-top))] min-[901px]:left-1/2 min-[901px]:-translate-x-1/2 min-[901px]:translate-y-0",
                     "min-[901px]:w-[min(1100px,92vw)]",
