@@ -51,22 +51,13 @@ export default function HeroSection() {
     // Shared cursor driver (used by both the headline tilt and the 3D scene)
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
-    const pointer = useRef([0, 0]); // [-0.5..0.5, -0.5..0.5]
+
 
     // Subtle 3D tilt on the headline
     const rX = useTransform(my, [-0.5, 0.5], [4, -4]);
     const rY = useTransform(mx, [-0.5, 0.5], [-4, 4]);
 
-    // Progressive enhancement gate
-    const [can3D, setCan3D] = useState(false);
-    useEffect(() => {
-        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const isDesktopLike = window.matchMedia("(pointer:fine)").matches;  // mouse/trackpad
-        (async () => {
-            const { tier } = await getGPUTier();  // 0..3
-            setCan3D(!prefersReduced && isDesktopLike && tier >= 2);
-        })();
-    }, []);
+
 
     return (
         <section className="relative h-[100svh] w-full overflow-hidden">

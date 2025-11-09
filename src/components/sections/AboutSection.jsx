@@ -1,7 +1,6 @@
 import React from "react";
-import { easeOut, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import profilePic from "../../assets/myimage.png";
-import { transition } from "three/examples/jsm/tsl/display/TransitionNode.js";
 
 export default function AboutSection() {
     const textFade = {

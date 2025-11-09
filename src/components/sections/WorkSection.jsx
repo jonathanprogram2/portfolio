@@ -110,7 +110,6 @@ export default function WorkSection() {
             updateProgress(true);
         };
 
-        const lerp = (a, b, t) => a + (b - a) * t;
 
         const checkBoundary = () => {
             const w = seqW.current;
@@ -212,7 +211,6 @@ export default function WorkSection() {
         // arrow-key navigation (left/right)
         const onKey = (e) => {
             if (document.activeElement !== container) return;  // only when focused
-            const STEP = 120;  // tweak step size
             if (e.key === 'ArrowRight') {
                 e.preventDefault();
                 vel.current = Math.max(-maxVel, Math.min(maxVel, vel.current + 24));
