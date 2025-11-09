@@ -644,6 +644,26 @@ html{
 }
 
 
+@media (max-width: 900px) {
+  .neon-btn {
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+  }
+
+  .neon-left {
+    left: 8px;
+  }
+
+  .neon-right {
+    right: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .neon-right {
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+  }
+  
+}
 
 /* ================================================== About section =================================================================================*/
 
