@@ -509,117 +509,251 @@ export default function SuperformulaBackground() {
                 // create panel
                 const el = document.createElement('div');
                 el.id = 'sf-panel';
-                el.innerHTML = `
-                    <div class="sf-head">
-                        <div class="sf-title">
-                            <span class="ping"></span>
-                            <span> ✨ Try me!</span>
-                        </div>
-                        <div class="sf-head-actions">
-                            <button class="sf-burst energy-button" id="sf-burst" type="button">
-                                ✨ ENERGY BURST
-                            </button>
-                        </div>
-                    </div>
 
-                    <div class="sf-grid">
-                        <!-- SHAPE -->
-                        <div class="sf-card">
-                            <h4>Shape & Morphing</h4>
+                const isMobile = window.innerWidth <= 900;
 
-                            <div class="sf-row">
-                                <div class="sf-label">Shape Preset</div>
-                                <select class="sf-select" id="sf-preset">
-                                    <option value="0">Star Crystal</option>
-                                    <option value="1">Ocean Creature</option>
-                                    <option value="2">Spiral Galaxy</option>
-                                    <option value="3">Quantum Form</option>
-                                </select>
+
+                if (isMobile) {
+                    // ----------------- MOBILE: bottom nav with drop-up panels -------------
+                    el.innerHTML = `
+                        <div class="sf-mobile-root">
+                            <!-- bottom nav bar -->
+                            <div class="sf-mobile-bar">
+                                <div class="sf-mobile-tabs">
+                                    <button class="sf-mobile-tab sf-mobile-tab--active" data-target="shape">
+                                        Shape &amp; Morphing
+                                    </button>
+                                    <button class="sf-mobile-tab" data-target="anim">
+                                        Animation &amp; Color
+                                    </button>
+                                    <button class="sf-mobile-tab" data-target="bloom">
+                                        Bloom Effect
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="sf-row">
-                                <div class="sf-label">Morph Duration</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-morph" type="range" min="0.5" max="5" step="0.1" value="${this.params.morphDuration}">
-                                    <div class="sf-val" id="sf-morph-val">${this.params.morphDuration.toFixed(1)}</div>
+                            <!-- drop up: Shape & Morphing -->
+                            <div class="sf-mobile-panel" id="sf-panel-shape">
+                                <div class="sf-mobile-panel-inner">
+                                    <div class="sf-row">
+                                        <div class="sf-label">Shape Preset</div>
+                                        <select class="sf-select" id="sf-preset">
+                                            <option value="0">Star Crystal</option>
+                                            <option value="1">Ocean Creature</option>
+                                            <option value="2">Spiral Galaxy</option>
+                                            <option value="3">Quantum Form</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Morph Duration</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-morph" type="range" min="0.5" max="5" step="0.1" value="${this.params.morphDuration}">
+                                            <div class="sf-val" id="sf-morph-val">${this.params.morphDuration.toFixed(1)}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- drop up: Animation & Color -->
+                            <div class="sf-mobile-panel sf-mobile-panel--hidden" id="sf-panel-anim">
+                                <div class="sf-mobile-panel-inner">
+                                    <button class="sf-burst energy-button" id="sf-burst" type="button">
+                                        ✨ Energy Burst
+                                    </button>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Pulse Speed</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-ps" type="range" min="0" max="2" step="0.05" value="${this.params.pulseSpeed}">
+                                            <div class="sf-val" id="sf-ps-val">${this.params.pulseSpeed.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Pulse Intensity</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-pi" type="range" min="0" max="0.5" step="0.01" value="${this.params.pulseIntensity}">
+                                            <div class="sf-val" id="sf-pi-val">${this.params.pulseIntensity.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Micro Animations</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-ma" type="range" min="0" max="0.3" step="0.01" value="${this.params.microAnimationIntensity}">
+                                            <div class="sf-val" id="sf-ma-val">${this.params.microAnimationIntensity.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Color Theme</div>
+                                        <select class="sf-select" id="sf-theme">
+                                            ${this.themeNames
+                                                .map(
+                                                    (name) =>
+                                                        `<option value="${name}" ${
+                                                            name === this.params.colorTheme ? "selected" : ""
+                                                        }>${name}</option>`
+                                                )
+                                                .join("")}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- drop-up: Bloom Effect -->
+                            <div class="sf-mobile-panel sf-mobile-panel--hidden" id="sf-panel-bloom">
+                                <div class="sf-mobile-panel-inner">
+                                    <div class="sf-row">
+                                        <div class="sf-label">Strength</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-bs" type="range" min="0" max="3" step="0.05" value="${this.params.bloomStrength}">
+                                            <div class="sf-val" id="sf-bs-val">${this.params.bloomStrength.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Radius</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-br" type="range" min="0" max="2" step="0.05" value="${this.params.bloomRadius}">
+                                            <div class="sf-val" id="sf-br-val">${this.params.bloomRadius.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Threshold</div>
+                                        <div class="sf-range-wrap">
+                                            <input class="sf-range" id="sf-bt" type="range" min="0" max="1" step="0.01" value="${this.params.bloomThreshold}">
+                                            <div class="sf-val" id="sf-bt-val">${this.params.bloomThreshold.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sf-row">
+                                        <div class="sf-label">Multi-Wave Effect</div>
+                                        <label class="sf-toggle" style="display:flex;align-items:center;gap:8px;background:transparent;border:none;padding:0;">
+                                            <input id="sf-mw" type="checkbox" ${this.params.multiWave ? "checked" : ""} />
+                                            <span>Enabled</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- ANIMATION -->
-                        <div class="sf-card">
-                            <h4>Animation & Color</h4>
-
-                            <div class="sf-row">
-                                <div class="sf-label">Pulse Speed</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-ps" type="range" min="0" max="2" step="0.05" value="${this.params.pulseSpeed}">
-                                    <div class="sf-val" id="sf-ps-val">${this.params.pulseSpeed.toFixed(2)}</div>
-                                </div>
+                    `;
+                } else {
+                    // ----- DESKTOP version -------
+                    el.innerHTML = `
+                        <div class="sf-head">
+                            <div class="sf-title">
+                                <span class="ping"></span>
+                                <span> ✨ Try me!</span>
                             </div>
-
-                            <div class="sf-row">
-                                <div class="sf-label">Pulse Intensity</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-pi" type="range" min="0" max="0.5" step="0.01" value="${this.params.pulseIntensity}">
-                                    <div class="sf-val" id="sf-pi-val">${this.params.pulseIntensity.toFixed(2)}</div>
-                                </div>
-                            </div>
-
-                            <div class="sf-row">
-                                <div class="sf-label">Micro-Animations</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-ma" type="range" min="0" max="0.3" step="0.01" value="${this.params.microAnimationIntensity}">
-                                    <div class="sf-val" id="sf-ma-val">${this.params.microAnimationIntensity.toFixed(2)}</div>
-                                </div>
-                            </div>
-
-                            <div class="sf-row">
-                                <div class="sf-label">Color Theme</div>
-                                <select class="sf-select" id="sf-theme">
-                                    ${this.themeNames.map(name => `<option value="${name}" ${name===this.params.colorTheme?'selected':''}>${name}</option>`).join('')}
-                                </select>
+                            <div class="sf-head-actions">
+                                <button class="sf-burst energy-button" id="sf-burst" type="button">
+                                    ✨ ENERGY BURST
+                                </button>
                             </div>
                         </div>
 
-                        <!-- BLOOM -->
-                        <div class="sf-card">
-                            <h4>Bloom Effect</h4>
+                        <div class="sf-grid">
+                            <!-- SHAPE -->
+                            <div class="sf-card">
+                                <h4>Shape & Morphing</h4>
 
-                            <div class="sf-row">
-                                <div class="sf-label">Strength</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-bs" type="range" min="0" max="3" step="0.05" value="${this.params.bloomStrength}">
-                                    <div class="sf-val" id="sf-bs-val">${this.params.bloomStrength.toFixed(2)}</div>
+                                <div class="sf-row">
+                                    <div class="sf-label">Shape Preset</div>
+                                    <select class="sf-select" id="sf-preset">
+                                        <option value="0">Star Crystal</option>
+                                        <option value="1">Ocean Creature</option>
+                                        <option value="2">Spiral Galaxy</option>
+                                        <option value="3">Quantum Form</option>
+                                    </select>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Morph Duration</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-morph" type="range" min="0.5" max="5" step="0.1" value="${this.params.morphDuration}">
+                                        <div class="sf-val" id="sf-morph-val">${this.params.morphDuration.toFixed(1)}</div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="sf-row">
-                                <div class="sf-label">Radius</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-br" type="range" min="0" max="2" step="0.05" value="${this.params.bloomRadius}">
-                                    <div class="sf-val" id="sf-br-val">${this.params.bloomRadius.toFixed(2)}</div>
+                            <!-- ANIMATION -->
+                            <div class="sf-card">
+                                <h4>Animation & Color</h4>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Pulse Speed</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-ps" type="range" min="0" max="2" step="0.05" value="${this.params.pulseSpeed}">
+                                        <div class="sf-val" id="sf-ps-val">${this.params.pulseSpeed.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Pulse Intensity</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-pi" type="range" min="0" max="0.5" step="0.01" value="${this.params.pulseIntensity}">
+                                        <div class="sf-val" id="sf-pi-val">${this.params.pulseIntensity.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Micro-Animations</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-ma" type="range" min="0" max="0.3" step="0.01" value="${this.params.microAnimationIntensity}">
+                                        <div class="sf-val" id="sf-ma-val">${this.params.microAnimationIntensity.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Color Theme</div>
+                                    <select class="sf-select" id="sf-theme">
+                                        ${this.themeNames.map(name => `<option value="${name}" ${name===this.params.colorTheme?'selected':''}>${name}</option>`).join('')}
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="sf-row">
-                                <div class="sf-label">Threshold</div>
-                                <div class="sf-range-wrap">
-                                    <input class="sf-range" id="sf-bt" type="range" min="0" max="1" step="0.01" value="${this.params.bloomThreshold}">
-                                    <div class="sf-val" id="sf-bt-val">${this.params.bloomThreshold.toFixed(2)}</div>
-                                </div>
-                            </div>
+                            <!-- BLOOM -->
+                            <div class="sf-card">
+                                <h4>Bloom Effect</h4>
 
-                            <div class="sf-row">
-                                <div class="sf-label">Multi-Wave Effect</div>
-                                <label class="sf-toggle" style="display:flex;align-items:center;gap:8px; background:transparent; border:none; padding:0;">
-                                    <input id="sf-mw" type="checkbox" ${this.params.multiWave ? 'checked' : ''} />
-                                    <span>Enabled</span>
-                                </label>
+                                <div class="sf-row">
+                                    <div class="sf-label">Strength</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-bs" type="range" min="0" max="3" step="0.05" value="${this.params.bloomStrength}">
+                                        <div class="sf-val" id="sf-bs-val">${this.params.bloomStrength.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Radius</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-br" type="range" min="0" max="2" step="0.05" value="${this.params.bloomRadius}">
+                                        <div class="sf-val" id="sf-br-val">${this.params.bloomRadius.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Threshold</div>
+                                    <div class="sf-range-wrap">
+                                        <input class="sf-range" id="sf-bt" type="range" min="0" max="1" step="0.01" value="${this.params.bloomThreshold}">
+                                        <div class="sf-val" id="sf-bt-val">${this.params.bloomThreshold.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                <div class="sf-row">
+                                    <div class="sf-label">Multi-Wave Effect</div>
+                                    <label class="sf-toggle" style="display:flex;align-items:center;gap:8px; background:transparent; border:none; padding:0;">
+                                        <input id="sf-mw" type="checkbox" ${this.params.multiWave ? 'checked' : ''} />
+                                        <span>Enabled</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }
 
                 const hero =
                     document.querySelector('[data-anchor="home"]') ||
@@ -628,58 +762,112 @@ export default function SuperformulaBackground() {
                     document.querySelector('.section');
 
                 const heroSection = hero || document.body;
-                heroSection.appendChild(el);
+
+                if (isMobile) {
+                    heroSection.appendChild(el);
+                } else {
+                    heroSection.appendChild(el);
+                }
+               
                 this._panel = el;
 
-                // Wire up handlers
-                el.querySelector('#sf-preset').addEventListener('change', (e) => {
-                    this.startMorphing(parseInt(e.target.value, 10));
-                });
+                /* ------- Mobile tab toggling -------*/
+                if (isMobile) {
+                    const tabs = el.querySelectorAll(".sf-mobile-tab");
+                    const panels = {
+                        shape: el.querySelector("#sf-panel-shape"),
+                        anim: el.querySelector("#sf-panel-anim"),
+                        bloom: el.querySelector("#sf-panel-bloom"),
+                    };
+
+                    tabs.forEach((tab) => {
+                        tab.addEventListener("click", () => {
+                            const target = tab.dataset.target;
+                            tabs.forEach((t) =>
+                                t.classList.toggle("sf-mobile-tab--active", t === tab)
+                            );
+                            Object.entries(panels).forEach(([key, p]) => {
+                                if (!p) return;
+                                p.classList.toggle(
+                                    "sf-mobile-panel--hidden",
+                                    key !== target
+                                );
+                            });
+                        });
+                    });
+                }
+
+                // shared wiring for sliders / selects
+                const qs = (sel) => el.querySelector(sel);
+
+                const presetSel = qs("#sf-preset");
+                if (presetSel) {
+                    presetSel.addEventListener("change", (e) => {
+                        this.startMorphing(parseInt(e.target.value, 10));
+                    });
+                }
 
                 const linkRange = (id, valId, setter) => {
-                    const input = el.querySelector(id);
-                    const val = el.querySelector(valId);
+                    const input = qs(id);
+                    const val = qs(valId);
+                    if (!input || !val) return;
                     const update = () => {
-                        val.textContent = Number(input.value).toFixed(input.step.includes('.') ? 2 : 0 );
-                        setter(Number(input.value));
+                        const num = Number(input.value);
+                        const decimals = input.step && input.step.includes(".") ? 2 : 0;
+                        val.textContent = num.toFixed(decimals);
+                        setter(num);
                     };
-                    input.addEventListener('input', update);
+                    input.addEventListener("input", update);
                     update();
                 };
 
-                linkRange('#sf-morph', '#sf-morph-val', v => { this.params.morphDuration = v; });
-                linkRange('#sf-ps', '#sf-ps-val', v => {
+                linkRange("#sf-morph", "#sf-morph-val", (v) => { this.params.morphDuration = v; });
+                linkRange("#sf-ps", "#sf-ps-val", (v) => {
                     this.params.pulseSpeed = v;
                     if (this.wireframeMesh) this.wireframeMesh.material.uniforms.pulseSpeed.value = v;
                 });
-                linkRange('#sf-pi', '#sf-pi-val', v => {
+                linkRange("#sf-pi", "#sf-pi-val", (v) => {
                     this.params.pulseIntensity = v;
                     if (this.wireframeMesh) this.wireframeMesh.material.uniforms.pulseIntensity.value = v;
                 });
-                linkRange('#sf-ma', '#sf-ma-val', v => {
+                linkRange("#sf-ma", "#sf-ma-val", (v) => {
                     this.params.microAnimationIntensity = v;
                     if (this.wireframeMesh) this.wireframeMesh.material.uniforms.microAnimationIntensity.value = v;
                 });
 
-                el.querySelector('#sf-theme').addEventListener('change', (e) => {
-                    this.params.colorTheme = e.target.value;
-                    this.updateWireframeGeometry();
-                    if (this.wireframeMesh?.material?.uniforms?.burstColor) {
-                        const themeColor = this.themes[this.params.colorTheme].burstColor || '#ffffff';
-                        this.wireframeMesh.material.uniforms.burstColor.value.set(themeColor);
-                    }
-                });
+                const themeSel = qs("#sf-theme");
+                if (themeSel) {
+                    themeSel.addEventListener("change", (e) => {
+                        this.params.colorTheme = e.target.value;
+                        this.updateWireframeGeometry();
+                        if (this.wireframeMesh?.material?.uniforms?.burstColor) {
+                            const themeColor = 
+                                this.themes[this.params.colorTheme].burstColor || '#ffffff';
+                            this.wireframeMesh.material.uniforms.burstColor.value.set(
+                                themeColor
+                            );
+                        }
+                    });
+                }
 
-                linkRange('#sf-bs', '#sf-bs-val', v => { this.params.bloomStrength = v; this.bloomPass.strength = v; });
-                linkRange('#sf-br', '#sf-br-val', v => { this.params.bloomRadius = v; this.bloomPass.radius = v; });
-                linkRange('#sf-bt', '#sf-bt-val', v => { this.params.bloomThreshold = v; this.bloomPass.threshold = v; });
+                linkRange("#sf-bs", "#sf-bs-val", (v) => { this.params.bloomStrength = v; this.bloomPass.strength = v; });
+                linkRange("#sf-br", "#sf-br-val", (v) => { this.params.bloomRadius = v; this.bloomPass.radius = v; });
+                linkRange("#sf-bt", "#sf-bt-val", (v) => { this.params.bloomThreshold = v; this.bloomPass.threshold = v; });
 
-                el.querySelector('#sf-mw').addEventListener('change', (e) => {
-                    this.params.multiWave = !!e.target.checked;
-                    if (this.wireframeMesh) this.wireframeMesh.material.uniforms.multiWave.value = this.params.multiWave ? 1.0 : 0.0;
-                });
+                const mwToggle = qs("#sf-mw");
+                if (mwToggle) {
+                    mwToggle.addEventListener("change", (e) => {
+                        this.params.multiWave = !!e.target.checked;
+                        if (this.wireframeMesh) 
+                            this.wireframeMesh.material.uniforms.multiWave.value = 
+                                this.params.multiWave ? 1.0 : 0.0;
+                    });
+                }
 
-                el.querySelector('#sf-burst').addEventListener('click', () => this.triggerBurst());
+                const burstBtn = qs("#sf-burst");
+                if (burstBtn) {
+                    burstBtn.addEventListener("click", () => this.triggerBurst())
+                }
             }
 
             removeCustomPanel() {
