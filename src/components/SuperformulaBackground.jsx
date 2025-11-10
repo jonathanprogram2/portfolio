@@ -517,10 +517,16 @@ export default function SuperformulaBackground() {
                     // ----------------- MOBILE: bottom nav with drop-up panels -------------
                     el.innerHTML = `
                         <div class="sf-mobile-root">
+                            <!-- Try Me label -->
+                            <div class="sf-mobile-try">
+                                <span class="ping"></span>
+                                <span> ✨ Try me!</span>
+                            </div>
+
                             <!-- bottom nav bar -->
                             <div class="sf-mobile-bar">
                                 <div class="sf-mobile-tabs">
-                                    <button class="sf-mobile-tab sf-mobile-tab--active" data-target="shape">
+                                    <button class="sf-mobile-tab" data-target="shape">
                                         Shape &amp; Morphing
                                     </button>
                                     <button class="sf-mobile-tab" data-target="anim">
@@ -530,10 +536,15 @@ export default function SuperformulaBackground() {
                                         Bloom Effect
                                     </button>
                                 </div>
+
+                                <!-- Energy Burst moved into the bar -->
+                                <button class="sf-burst sf-mobile-bar energy-button" id="sf-burst" type="button">
+                                    ✨ Energy Burst
+                                </button>
                             </div>
 
                             <!-- drop up: Shape & Morphing -->
-                            <div class="sf-mobile-panel" id="sf-panel-shape">
+                            <div class="sf-mobile-panel sf-mobile-panel--hidden" id="sf-panel-shape">
                                 <div class="sf-mobile-panel-inner">
                                     <div class="sf-row">
                                         <div class="sf-label">Shape Preset</div>
@@ -558,10 +569,6 @@ export default function SuperformulaBackground() {
                             <!-- drop up: Animation & Color -->
                             <div class="sf-mobile-panel sf-mobile-panel--hidden" id="sf-panel-anim">
                                 <div class="sf-mobile-panel-inner">
-                                    <button class="sf-burst energy-button" id="sf-burst" type="button">
-                                        ✨ Energy Burst
-                                    </button>
-
                                     <div class="sf-row">
                                         <div class="sf-label">Pulse Speed</div>
                                         <div class="sf-range-wrap">
@@ -780,9 +787,30 @@ export default function SuperformulaBackground() {
                         bloom: el.querySelector("#sf-panel-bloom"),
                     };
 
+                    let openKey = null;
+
+                    const closeAllPanels = () => {
+                        openKey = null;
+                        tabs.forEach((t) => t.classList.remove("sf-mobile-tab--active"));
+                        Object.values(panels).forEach((p) => {
+                            if (!p) return;
+                            p.classList.add("sf-mobile-panel--hidden");
+                        });
+                    };
+
                     tabs.forEach((tab) => {
-                        tab.addEventListener("click", () => {
+                        tab.addEventListener("click", (e) => {
+                            e.stopPropagation();
                             const target = tab.dataset.target;
+
+                            // if this tab is already open -> close it
+                            if (openKey === target) {
+                                closeAllPanels();
+                                return;
+                            }
+
+                            // otherwise open this one and close others
+                            openKey = target;
                             tabs.forEach((t) =>
                                 t.classList.toggle("sf-mobile-tab--active", t === tab)
                             );
@@ -795,6 +823,15 @@ export default function SuperformulaBackground() {
                             });
                         });
                     });
+
+                    // Click outside to close
+                    const root = el.querySelector(".sf-mobile-root");
+                    this._mobileOutsideHandler = (evt) => {
+                        if (root && !root.contains(evt.target)) {
+                            closeAllPanels();
+                        }
+                    };
+                    document.addEventListener("click", this._mobileOutsideHandler);
                 }
 
                 // shared wiring for sliders / selects
@@ -926,6 +963,11 @@ export default function SuperformulaBackground() {
                     this.container.removeEventListener('mousedown', this._onMouseDown);
                     this.container.removeEventListener('mousemove', this._onMouseMove);
                     this.container.removeEventListener('mouseup', this._onMouseUp);
+                }
+
+                if (this._mobileOutsideHandler) {
+                    document.removeEventListener("click", this._mobileOutsideHandler);
+                    this._mobileOutsideHandler = null;
                 }
                 
                 this.removeCustomPanel();

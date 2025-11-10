@@ -419,6 +419,56 @@ html{
     display: none;
   }
 }
+
+/* Mobile controls — Try me label */
+.sf-mobile-try {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.85);
+}
+
+.sf-mobile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sf-mobile-tabs {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sf-mobile-panel--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+
+@media (max-width: 900px) {
+  .sf-mobile-bar .energy-button {
+  border-radius: 999px !important;
+  padding-inline: 22px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+
+  }
+
+}
+
+
+
 /***************************************************************************************/
 
 #menu .nav-link {
