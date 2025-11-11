@@ -12,7 +12,6 @@ function EnvelopeIcon({ className = "w-5 h-5"}) {
 }
 
 const CONTACT_OFFSET = 300;
-const WORK_OFFSET = 150;
 
 export default function TopNav({ anchors = [] }) {
     const [open, setOpen] = useState(false);
