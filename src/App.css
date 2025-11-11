@@ -1114,18 +1114,16 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 /* -- Work / Infinite H-Scroll — Mobile tile sizing ----------------------*/
 @media (max-width: 900px) {
   :root {
-    --tile-w: 84vw;  /* width of each tile */
-    --tile-h: min(46vh, 420px);    /* height of each tile */
+    --tile-w: 88vw;  /* width of each tile */
+    --tile-h: 48vh;    /* height of each tile */
     --tile-radius: 18px;
-    --tile-gap: 18px;
+    --tile-gap: 16px;
   }
 
-  @media (max-height: 720px) {
-    :root { --tile-h: min(40vh, 340px); }
-  }
-  @media (max-height: 640px) {
-    :root {--tile-h: min(36vh, 300px); }
-  }
+
+  .work-wrap { touch-action: pan-y;}
+
+  .ihs-scroller { touch-action: pan-x;}
 
 
   /* Make the scroller a clean row with consistent gaps */
@@ -1133,7 +1131,7 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
     display: flex;
     gap: var(--tile-gap);
     align-items: center;
-    padding: 0 4vw;
+    padding: 0 3.5vw;
   }
 
   /* force a uniform footprint for every base slide */
@@ -1180,9 +1178,9 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
   }
   /* Optional: tighten the container so the raw stays centered */
   .ihs-container.ihs--tight {
-    padding: 0 4vw;
-    inset: 12px 0 20px 0; /* leave breathing room so tiles arent copped together top/bottom */
-    height: calc(100svh - 32px);
+    padding: 0 3.5vw;
+    inset: 10px 0 16px 0; /* leave breathing room so tiles arent copped together top/bottom */
+    height: calc(100svh - 26px);
   }
   .ihs-about {
     padding: 16px !important;
@@ -1211,6 +1209,18 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
     text-align: left;
   }
 }
+
+@media (max-width: 900px) and (max-height: 700px) {
+  :root { --tile-h: min(42vh, 340px); }
+}
+
+@media (max-width: 900px)  and (max-height: 640px) {
+    :root { --tile-h: min(36vh, 300px); }
+  }
+  @media (max-width: 400px) {
+    :root {--tile-w: 92vw; }
+  }
+
 
 
 @media (max-width: 900px) {
@@ -1245,7 +1255,7 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
   }
   .ihs-counter {
     position: absolute;
-    top: 70%;
+    top: 66%;
     right: 4vw;
     bottom: auto;
     transform: translateY(-50%);
@@ -1256,13 +1266,14 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
     font: 800 clamp(28px, 14vw, 72px)/1 system-ui, sans-serif;
   }
   .work-chipbar {
-    top: 12vh;
+    top: 10vh;
     left: 0;
     right: 0;
     z-index: 7;
   }
-
 }
+
+
 
 
 /* ====================================================== Services Section ==========================================================================*/

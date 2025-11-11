@@ -79,6 +79,8 @@ export default function WorkSection() {
             scroller.querySelectorAll('.clone').forEach(n => n.remove());
 
             const originals = Array.from(scroller.querySelectorAll('section.base'));
+
+            
             let width = 0;
             originals.forEach(s => (width += parseFloat(getComputedStyle(s).width)));
 
@@ -104,9 +106,18 @@ export default function WorkSection() {
 
             scroller.style.width = `${width * (1 + buffer * 2)}px`;
             seqW.current = width;
-            targetX.current = width * buffer;
+
+            const scrollerStyles = getComputedStyle(scroller);
+            const gap = parseFloat(scrollerStyles.gap || scrollerStyles.columnGap || 0) || 0;
+
+            const padLeft = parseFloat(getComputedStyle(container).paddingLeft || 0) || 0;
+
+            const START_OFFSET_PX = gap * 0.5 + padLeft;
+
+            targetX.current = width * buffer + START_OFFSET_PX;
             currentX.current = targetX.current;
             scroller.style.transform = `translate3d(-${currentX.current}px,0,0)`;
+
             updateProgress(true);
         };
 
@@ -273,6 +284,14 @@ export default function WorkSection() {
             if (href) window.open(href, '_blank', 'noopener,noreferrer');
         };
 
+        const stopWhenOutside = (e) => {
+            if (!scroller.contains(e.target)) {
+                vel.current = 0;
+                running.current = false;
+            }
+        };
+        document.addEventListener('pointerdown', stopWhenOutside, { passive: true });
+
         const focusOnEnter = () => container.focus();
 
         scroller.addEventListener('click', onDelegatedClick);
@@ -313,6 +332,7 @@ export default function WorkSection() {
             scroller.removeEventListener('click', onDelegatedClick);
             scroller.removeEventListener('keydown', onDelegatedKey);
             container.removeEventListener('mouseenter', focusOnEnter);
+            document.removeEventListener('pointerdown', stopWhenOutside);
             cancelAnimationFrame(rafId);
         };
     }, []);
@@ -338,7 +358,7 @@ export default function WorkSection() {
                     <section className="ihs-section base ihs-intro">
                         <h1>Explore our Creations</h1>
                         <h2>Scroll sideways to cruise ← →  </h2>
-                        <p class="hint">Click any project to explore</p>
+                        <p className="hint">Click any project to explore</p>
                         
                     </section>
                     
