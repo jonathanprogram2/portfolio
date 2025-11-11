@@ -1114,17 +1114,26 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 /* -- Work / Infinite H-Scroll — Mobile tile sizing ----------------------*/
 @media (max-width: 900px) {
   :root {
-    --tile-w: 82vw;  /* width of each tile */
-    --tile-h: 42vh;    /* height of each tile */
+    --tile-w: 84vw;  /* width of each tile */
+    --tile-h: min(46vh, 420px);    /* height of each tile */
     --tile-radius: 18px;
-    --tile-gap: 20px;
+    --tile-gap: 18px;
   }
+
+  @media (max-height: 720px) {
+    :root { --tile-h: min(40vh, 340px); }
+  }
+  @media (max-height: 640px) {
+    :root {--tile-h: min(36vh, 300px); }
+  }
+
 
   /* Make the scroller a clean row with consistent gaps */
   .ihs-scroller {
     display: flex;
     gap: var(--tile-gap);
     align-items: center;
+    padding: 0 4vw;
   }
 
   /* force a uniform footprint for every base slide */
@@ -1172,6 +1181,8 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
   /* Optional: tighten the container so the raw stays centered */
   .ihs-container.ihs--tight {
     padding: 0 4vw;
+    inset: 12px 0 20px 0; /* leave breathing room so tiles arent copped together top/bottom */
+    height: calc(100svh - 32px);
   }
   .ihs-about {
     padding: 16px !important;
@@ -1219,7 +1230,7 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--tile-radius);
+    border-radius: inherit;
     display: block;
     user-select: none;
     -webkit-user-drag: none;
