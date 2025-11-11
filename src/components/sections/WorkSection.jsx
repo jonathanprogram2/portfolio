@@ -318,8 +318,8 @@ export default function WorkSection() {
     }, []);
 
     return (
-       <section id="work" className="work-wrap"  aria-label="Work">
-            <div className="work-chipbar">
+       <section className="work-wrap max-[900px]:mt-[45vh]"  aria-label="Work">
+            <div id="work" className="work-chipbar">
                 <span className="chip-anim work-chip">WORK</span>
             </div>
             

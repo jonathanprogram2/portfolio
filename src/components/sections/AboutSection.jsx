@@ -13,7 +13,12 @@ export default function AboutSection() {
     };
 
     return (
-        <section className="h-full w-full flex items-center justify-center bg-[#000000] text-white px-8">
+        <section 
+            className="
+                w-full bg-[#000000] text-white px-8 
+                flex justify-center
+                min-[901px]:min-h-[100vh] min-[901px]:items-center
+                max-[900px]:items-start max-[900px]:pt-32 max-[900px]:pb-24">
             <div className="grid grid-cols-1 lg:grid-cols-2 items-center max-w-7xl gap-12">
                 {/* LEFT: PROFILE IMAGE */}
                 <motion.div

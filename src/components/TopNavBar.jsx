@@ -12,6 +12,7 @@ function EnvelopeIcon({ className = "w-5 h-5"}) {
 }
 
 const CONTACT_OFFSET = 300;
+const WORK_OFFSET = 150;
 
 export default function TopNav({ anchors = [] }) {
     const [open, setOpen] = useState(false);
@@ -28,6 +29,7 @@ export default function TopNav({ anchors = [] }) {
         setOpen(false);
 
         const contactAnchor = contact || "contact";
+        const workAnchor = work || "work";
 
         // Contact link from navbar
         if (anchor === contactAnchor) {
@@ -49,6 +51,25 @@ export default function TopNav({ anchors = [] }) {
             window.location.hash = `#${anchor}`;
             return;
         }
+
+        if (anchor === workAnchor) {
+            const el = document.getElementById(workAnchor);
+
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                const scrollTop = window.scrollY || window.pageYOffset;
+                const targetY = rect.top + scrollTop - CONTACT_OFFSET;
+
+                window.scrollTo({
+                    top: targetY,
+                    behavior: "smooth",
+                });
+            }
+
+            window.location.hash = `#${anchor}`;
+            return;
+        }
+
         // use fullPage.js if present; otherwise smooth scroll fallback
         if (window?.fullpage_api?.moveTo) {
             window.fullpage_api.moveTo(anchor);
@@ -63,7 +84,7 @@ export default function TopNav({ anchors = [] }) {
 
             window.location.hash = `#${anchor}`;
         }
-    }, [contact]);
+    }, [contact, work]);
 
 
     return (

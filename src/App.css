@@ -1110,6 +1110,149 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
   50% { opacity: 1; transform: translateY(-3px);}
 }
 
+/* Mobile view for the tiles */
+/* -- Work / Infinite H-Scroll — Mobile tile sizing ----------------------*/
+@media (max-width: 900px) {
+  :root {
+    --tile-w: 82vw;  /* width of each tile */
+    --tile-h: 42vh;    /* height of each tile */
+    --tile-radius: 18px;
+    --tile-gap: 20px;
+  }
+
+  /* Make the scroller a clean row with consistent gaps */
+  .ihs-scroller {
+    display: flex;
+    gap: var(--tile-gap);
+    align-items: center;
+  }
+
+  /* force a uniform footprint for every base slide */
+  .ihs-section.base {
+    width: var(--tile-w) !important;
+    min-width: var(--tile-w) !important;
+    height: var(--tile-h) !important;
+    border-radius: var(--tile-radius);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  /* Project image tiles: fill the tile perfectly */
+  .ihs-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--tile-radius);
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Tidy type sizes inside the smaller cards */
+  .ihs-intro h1,
+  .ihs-header h1,
+  .ihs-about h1,
+  .ihs-story h1,
+  .ihs-outro h1 {
+    font-size: clamp(18px, 5vw, 28px);
+    text-align: center;
+    line-height: 1.15;
+    margin: 0 10px;
+  }
+  .ihs-intro h2,
+  .ihs-intro p.hint {
+    font-size: clamp(12px, 3.4vw, 14px);
+    opacity: .85;
+    margin: 4px 10px 0;
+    text-align: center;
+  }
+  /* Optional: tighten the container so the raw stays centered */
+  .ihs-container.ihs--tight {
+    padding: 0 4vw;
+  }
+  .ihs-about {
+    padding: 16px !important;
+  }
+  .ihs-about .copy p {
+    font-size: clamp(12px, 3.6vw, 15px) !important;
+    line-height: 1.35 !important;
+    margin: 0 0 8px !important;
+  }
+  .ihs-about h1 {
+    font-size: clamp(20px, 6.2vw, 32px) !important;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-top: 12px;
+  }
+  .ihs-story {
+    padding: 20px !important;
+    row-gap: 10px !important;
+  }
+  .ihs-story h1 {
+    font-size: clamp(18px, 5.4vw, 30px) !important;
+    letter-spacing: -0.015em;
+    line-height: 1.02 !important;
+    max-inline-size: 16ch;
+    margin: 0 !important;
+    text-align: left;
+  }
+}
+
+
+@media (max-width: 900px) {
+  /* unify card sizing on mobile */
+  .ihs-section.base {
+    width: 85vw;
+    height: 58vh;
+    border-radius: 1.5rem;
+  }
+
+  /* Project image cards */
+  .ihs-section.base.project-slide {
+    background: transparent !important;
+    overflow: hidden;
+  }
+  .ihs-section.base.project-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--tile-radius);
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Remove any heavy black scrims that may be defined on desktop */
+  .ihs-section.base::before,
+  .ihs-section.base .overlay,
+  .ihs-section.base .scrim {
+    background: transparent !important;
+    opacity: 1 !important;
+  }
+  .ihs-counter {
+    position: absolute;
+    top: 70%;
+    right: 4vw;
+    bottom: auto;
+    transform: translateY(-50%);
+    z-index: 6;  /* above cards */
+    text-shadow: 0 10px 28px rgba(0,0,0,.45);
+  }
+  .ihs-counter h1 {
+    font: 800 clamp(28px, 14vw, 72px)/1 system-ui, sans-serif;
+  }
+  .work-chipbar {
+    top: 12vh;
+    left: 0;
+    right: 0;
+    z-index: 7;
+  }
+
+}
+
 
 /* ====================================================== Services Section ==========================================================================*/
 /* Services spotlight hover */
@@ -1438,3 +1581,5 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
       backdrop-filter: blur(18px);
     }
 }
+
+/*-----------------------------------------------------------------------------------------------------------------*/
