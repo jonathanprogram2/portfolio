@@ -73,14 +73,20 @@ export default function WorkSection() {
             return;
         }
 
+        const stopAll = () => {
+            vel.current = 0;
+            running.current = false;
+            targetX.current = currentX.current;
+            cancelAnimationFrame(reqId.current);
+        }
+
         // build infinite sequence (clone sections)
         const setup = () => {
             // clear old clones
             scroller.querySelectorAll('.clone').forEach(n => n.remove());
 
-            const originals = Array.from(scroller.querySelectorAll('section.base'));
+            const originals = Array.from(scroller.querySelectorAll('section.base:not(.clone)'));
 
-            
             let width = 0;
             originals.forEach(s => (width += parseFloat(getComputedStyle(s).width)));
 
@@ -90,7 +96,7 @@ export default function WorkSection() {
                     const c = s.cloneNode(true);
                     c.classList.add('clone');
                     c.setAttribute('data-clone', `${i}-${idx}`);
-                    scroller.appendChild(c);
+                    scroller.insertBefore(c, scroller.firstChild);
                 });
             }
             
@@ -107,16 +113,24 @@ export default function WorkSection() {
             scroller.style.width = `${width * (1 + buffer * 2)}px`;
             seqW.current = width;
 
-            const scrollerStyles = getComputedStyle(scroller);
-            const gap = parseFloat(scrollerStyles.gap || scrollerStyles.columnGap || 0) || 0;
+            const viewportW = container.clientWidth;
 
-            const padLeft = parseFloat(getComputedStyle(container).paddingLeft || 0) || 0;
+            const startIdx = Math.max(0, originals.findIndex(s => s.classList.contains('ihs-intro')));
+            const startTile = originals[startIdx] ?? originals[0];
 
-            const START_OFFSET_PX = gap * 0.5 + padLeft;
+            let xBefore = 0;
+            for (let i = 0; i < startIdx; i++) {
+                xBefore += parseFloat(getComputedStyle(originals[i]).width);
+            }
 
-            targetX.current = width * buffer + START_OFFSET_PX;
+            const tileW = parseFloat(getComputedStyle(startTile).width);
+            const centerNudge = (viewportW - tileW) * 0.5;
+
+            const base = width * buffer;
+
+            targetX.current = base + xBefore - centerNudge;
             currentX.current = targetX.current;
-            scroller.style.transform = `translate3d(-${currentX.current}px,0,0)`;
+            scroller.style.transform = `translate3d(-${Math.round(currentX.current)}px,0,0)`;
 
             updateProgress(true);
         };
@@ -216,8 +230,6 @@ export default function WorkSection() {
             startLoop(); // Kick / keep the RAF loop running
         };
 
-       
-
 
         // arrow-key navigation (left/right)
         const onKey = (e) => {
@@ -285,12 +297,10 @@ export default function WorkSection() {
         };
 
         const stopWhenOutside = (e) => {
-            if (!scroller.contains(e.target)) {
-                vel.current = 0;
-                running.current = false;
-            }
+            if (!container.contains(e.target)) stopAll();
         };
         document.addEventListener('pointerdown', stopWhenOutside, { passive: true });
+        document.addEventListener('wheel', stopWhenOutside, { passive: true });
 
         const focusOnEnter = () => container.focus();
 
