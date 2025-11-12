@@ -82,21 +82,26 @@ export default function WorkSection() {
 
         // build infinite sequence (clone sections)
         const setup = () => {
+            const container = containerRef.current;
+            const scroller = scrollerRef.current;
+
             // clear old clones
             scroller.querySelectorAll('.clone').forEach(n => n.remove());
 
-            const originals = Array.from(scroller.querySelectorAll('section.base:not(.clone)'));
+            const originals = Array.from(scroller.querySelectorAll('section.base'));
 
             let width = 0;
-            originals.forEach(s => (width += parseFloat(getComputedStyle(s).width)));
-
+            originals.forEach(s => {
+                width += s.getBoundingClientRect().width;
+            });
+                
             // prepend clones
             for (let i = -buffer; i < 0; i++) {
                 originals.forEach((s, idx) => {
                     const c = s.cloneNode(true);
                     c.classList.add('clone');
                     c.setAttribute('data-clone', `${i}-${idx}`);
-                    scroller.insertBefore(c, scroller.firstChild);
+                    scroller.appendChild(c);
                 });
             }
             
@@ -113,23 +118,17 @@ export default function WorkSection() {
             scroller.style.width = `${width * (1 + buffer * 2)}px`;
             seqW.current = width;
 
-            const viewportW = container.clientWidth;
+            // === Center the INTRO tile at counter 0 == //
+            const intro = scroller.querySelector('.ihs-intro');
+            const introRect = intro.getBoundingClientRect();
+            const firstLeftInReal = originals[0].offsetLeft;
+            const introLeftInReal = intro.offsetLeft - firstLeftInReal;
 
-            const startIdx = Math.max(0, originals.findIndex(s => s.classList.contains('ihs-intro')));
-            const startTile = originals[startIdx] ?? originals[0];
+            const centerNudge = (container.clientWidth - introRect.width) * 0.5;
 
-            let xBefore = 0;
-            for (let i = 0; i < startIdx; i++) {
-                xBefore += parseFloat(getComputedStyle(originals[i]).width);
-            }
-
-            const tileW = parseFloat(getComputedStyle(startTile).width);
-            const centerNudge = (viewportW - tileW) * 0.5;
-
-            const base = width * buffer;
-
-            targetX.current = base + xBefore - centerNudge;
+            targetX.current = width * buffer + introLeftInReal - centerNudge;
             currentX.current = targetX.current;
+
             scroller.style.transform = `translate3d(-${Math.round(currentX.current)}px,0,0)`;
 
             updateProgress(true);
@@ -206,6 +205,7 @@ export default function WorkSection() {
                 } else {
                     running.current = false;
                     vel.current = 0;
+                    containerRef.current.style.touchAction = 'pan-y';
                 }
             };
 
@@ -215,7 +215,9 @@ export default function WorkSection() {
        
 
         // init
-        setup();
+        requestAnimationFrame(() => {
+            requestAnimationFrame(setup);
+        });
 
         // wheel
         const onWheel = (e) => {
@@ -223,7 +225,7 @@ export default function WorkSection() {
             const absX = Math.abs(e.deltaX);
             const absY = Math.abs(e.deltaY);
 
-            if (absY > absX) return;
+            if (absX <= absY + 6) return;
 
             e.preventDefault();
             vel.current = Math.max(-maxVel, Math.min(maxVel, vel.current + e.deltaX)); // adds wheel impulse
@@ -258,6 +260,7 @@ export default function WorkSection() {
             lastTouchX.current = (e.touches ? e.touches[0].clientX : e.clientX);
             lastTouchT.current = performance.now();
             vel.current = 0;
+            containerRef.current.style.touchAction = 'none';
         };
         const onMove = (e) => {
             if (!isDown.current) return;

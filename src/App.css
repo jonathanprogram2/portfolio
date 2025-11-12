@@ -1111,10 +1111,10 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 }
 
 /* Mobile view for the tiles */
-/* -- Work / Infinite H-Scroll — Mobile tile sizing ----------------------*/
+/* -- Work / Infinite H-Scroll — Mobile tile sizing ------------------------------------------------------*/
 @media (max-width: 900px) {
   :root {
-    --tile-w: 88vw;  /* width of each tile */
+    --tile-w: 92vw;  /* width of each tile */
     --tile-h: 48vh;    /* height of each tile */
     --tile-radius: 18px;
     --tile-gap: 16px;
@@ -1214,6 +1214,13 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
   :root { --tile-h: min(42vh, 340px); }
 }
 
+@media (max-height: 780px) {
+  :root { --tile-h: min(50vh, 500px); }
+}
+@media (max-height: 680px) {
+  :root { --tile-h: min(44vh, 440px); }
+}
+
 @media (max-width: 900px)  and (max-height: 640px) {
     :root { --tile-h: min(38vh, 300px); }
   }
@@ -1223,6 +1230,8 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 @media (max-width: 420px) {
   :root { --tile-w: 94vw;}
 }
+
+.ihs-container { touch-action: pan-y; }
 
 
 @media (max-width: 900px) {
