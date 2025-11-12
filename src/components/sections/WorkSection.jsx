@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useRef }from 'react';
-import { fa } from 'zod/v4/locales';
 
 
 // minimal project data - swap/extend as you like
@@ -82,12 +81,6 @@ export default function WorkSection() {
             return;
         }
 
-        const stopAll = () => {
-            vel.current = 0;
-            running.current = false;
-            targetX.current = currentX.current;
-            cancelAnimationFrame(reqId.current);
-        }
 
         // build infinite sequence (clone sections)
         const setup = () => {
