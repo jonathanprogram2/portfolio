@@ -1114,7 +1114,7 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 /* -- Work / Infinite H-Scroll — Mobile tile sizing ------------------------------------------------------*/
 @media (max-width: 900px) {
   :root {
-    --tile-w: 92vw;  /* width of each tile */
+    --tile-w: 100vw;  /* width of each tile */
     --tile-h: 48vh;    /* height of each tile */
     --tile-radius: 18px;
     --tile-gap: 16px;
