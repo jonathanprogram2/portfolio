@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef }from 'react';
+import { fa } from 'zod/v4/locales';
 
 
 // minimal project data - swap/extend as you like
@@ -60,6 +61,14 @@ export default function WorkSection() {
         const bar       = barRef.current;
         const counter   = counterRef.current;
 
+        const setIdle = (yes) => {
+            if (!container) return;
+            container.style.touchAction = yes ? 'pan-y' : 'none';
+            container.style.overscrollBehavior = yes ? 'auto' : 'contain';
+        };
+
+
+
         // reduced motion fallback (just show vertical stacked content)
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReduced) {
@@ -90,48 +99,66 @@ export default function WorkSection() {
 
             const originals = Array.from(scroller.querySelectorAll('section.base'));
 
-            let width = 0;
-            originals.forEach(s => {
-                width += s.getBoundingClientRect().width;
-            });
-                
-            // prepend clones
-            for (let i = -buffer; i < 0; i++) {
-                originals.forEach((s, idx) => {
-                    const c = s.cloneNode(true);
-                    c.classList.add('clone');
-                    c.setAttribute('data-clone', `${i}-${idx}`);
-                    scroller.appendChild(c);
-                });
-            }
-            
-            // append clones
-            for (let i = 1; i <= buffer; i++) {
-                originals.forEach((s, idx) => {
-                    const c = s.cloneNode(true);
-                    c.classList.add('clone');
-                    c.setAttribute('data-clone', `${i}-${idx}`);
-                    scroller.appendChild(c);
-                });
-            }
+            // wait for images do width are correct
+            const waitImages = () => Promise.all(
+                Array.from(scroller.querySelectorAll('img')).map(img =>
+                    img.complete ? Promise.resolve() :
+                    new Promise(res => img.addEventListener('load', res, { once: true }))
+                )
+            );
 
-            scroller.style.width = `${width * (1 + buffer * 2)}px`;
-            seqW.current = width;
 
-            // === Center the INTRO tile at counter 0 == //
-            const intro = scroller.querySelector('.ihs-intro');
-            const introRect = intro.getBoundingClientRect();
-            const firstLeftInReal = originals[0].offsetLeft;
-            const introLeftInReal = intro.offsetLeft - firstLeftInReal;
+            const build = () => {
+                let width = 0;
+                originals.forEach(s => { width += s.getBoundingClientRect().width; });
 
-            const centerNudge = (container.clientWidth - introRect.width) * 0.5;
+                // prepend clones
+                for (let i = -buffer; i < 0; i++) {
+                    originals.forEach((s, idx) => {
+                        const c = s.cloneNode(true);
+                        c.classList.add('clone');
+                        c.setAttribute('data-clone', `${i}-${idx}`);
+                        scroller.appendChild(c);
+                    });
+                }
 
-            targetX.current = width * buffer + introLeftInReal - centerNudge;
-            currentX.current = targetX.current;
+                // append clones
+                for (let i = 1; i <= buffer; i++) {
+                    originals.forEach((s, idx) => {
+                        const c = s.cloneNode(true);
+                        c.classList.add('clone');
+                        c.setAttribute('data-clone', `${i}-${idx}`);
+                        scroller.appendChild(c);
+                    });
+                }
 
-            scroller.style.transform = `translate3d(-${Math.round(currentX.current)}px,0,0)`;
+                scroller.style.width = `${width * (1 + buffer * 2)}px`;
+                seqW.current = width;
 
-            updateProgress(true);
+                // === Center the INTRO tile at counter 0 == //
+                const intro = scroller.querySelector('.ihs-intro');
+                const firstLeft = originals[0].offsetLeft;
+                const introLeft = intro.offsetLeft - firstLeft;
+                const introW = intro.getBoundingClientRect().width;
+                const centerNudge = (container.clientWidth - introW) * 0.5;
+
+                targetX.current = width * buffer + introLeft - centerNudge;
+                currentX.current = targetX.current;
+
+                scroller.style.transform = `translate3d(-${Math.round(currentX.current)}px,0,0)`;
+
+                // snap progress to 0
+                lastPct.current = 0;
+                progressScale.current = 0;
+                progressTarget.current = 0;
+                bar.style.transform = `scaleX(0)`;
+                counter.textContent = '0';
+            };
+
+            requestAnimationFrame(() => requestAnimationFrame(async () => {
+                await waitImages();
+                build();
+            }))
         };
 
 
@@ -205,7 +232,7 @@ export default function WorkSection() {
                 } else {
                     running.current = false;
                     vel.current = 0;
-                    containerRef.current.style.touchAction = 'pan-y';
+                    setIdle(true);
                 }
             };
 
@@ -225,11 +252,17 @@ export default function WorkSection() {
             const absX = Math.abs(e.deltaX);
             const absY = Math.abs(e.deltaY);
 
-            if (absX <= absY + 6) return;
+            if (absX <= absY + 6) {
+                setIdle(true);
+                return;
+            }
+                
+                
 
             e.preventDefault();
             vel.current = Math.max(-maxVel, Math.min(maxVel, vel.current + e.deltaX)); // adds wheel impulse
             startLoop(); // Kick / keep the RAF loop running
+            setIdle(false);
         };
 
 
@@ -260,7 +293,7 @@ export default function WorkSection() {
             lastTouchX.current = (e.touches ? e.touches[0].clientX : e.clientX);
             lastTouchT.current = performance.now();
             vel.current = 0;
-            containerRef.current.style.touchAction = 'none';
+            setIdle(false);
         };
         const onMove = (e) => {
             if (!isDown.current) return;
@@ -281,6 +314,8 @@ export default function WorkSection() {
         };
         const onEnd = () => {
             isDown.current = false;
+
+            if (Math.abs(vel.current) < 0.02) setIdle(true);
         };
 
         const onDelegatedClick = (e) => {
@@ -300,7 +335,11 @@ export default function WorkSection() {
         };
 
         const stopWhenOutside = (e) => {
-            if (!container.contains(e.target)) stopAll();
+            if (!container.contains(e.target)) {
+                vel.current = 0;
+                running.current = false;
+                setIdle(true);
+            }
         };
         document.addEventListener('pointerdown', stopWhenOutside, { passive: true });
         document.addEventListener('wheel', stopWhenOutside, { passive: true });

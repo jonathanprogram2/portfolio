@@ -1114,10 +1114,10 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 /* -- Work / Infinite H-Scroll — Mobile tile sizing ------------------------------------------------------*/
 @media (max-width: 900px) {
   :root {
-    --tile-w: 120vw;  /* width of each tile */
-    --tile-h: min(56vh, 560px);    /* height of each tile */
+    --tile-w: 138vw;  /* width of each tile */
+    --tile-h: min(60vh, 600px);    /* height of each tile */
     --tile-radius: 18px;
-    --tile-gap: 16px;
+    --tile-gap: 18px;
   }
 
 
@@ -1235,12 +1235,6 @@ img, .ihs-hero, .ihs-banner { -webkit-tap-highlight-color: transparent;}
 
 
 @media (max-width: 900px) {
-  /* unify card sizing on mobile */
-  .ihs-section.base {
-    width: 85vw;
-    height: 58vh;
-    border-radius: 1.5rem;
-  }
 
   /* Project image cards */
   .ihs-section.base.project-slide {
