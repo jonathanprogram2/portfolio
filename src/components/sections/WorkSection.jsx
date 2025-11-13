@@ -34,7 +34,7 @@ const PROJECTS = [
 
 export default function WorkSection() {
     return (
-       <section id="work" className="work-wrap py-24 max-[900px]:-mt-8">
+       <section id="work" className="work-wrap py-24 max-[900px]:-mt-15">
             <div id="work-chip" className="work-chipbar chip-chip-work">
                 <span className="chip-anim work-chip">WORK</span>
             </div>
