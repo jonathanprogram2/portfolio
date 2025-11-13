@@ -1099,7 +1099,11 @@ img.grayscale {
   
 }
 
-
+@media (max-width: 900px) {
+  .work-wrap {
+    margin-top: -1.5rem;
+  }
+}
 
 
 
