@@ -75,7 +75,7 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contact" className="relative w-full bg-[#000000] text-white pt-16 md:pt-28 max-[900px]:pt-28 scroll-mt-28 md:scroll-mt-36 md:-mt-8">
+        <section id="contact" className="relative w-full bg-[#000000] text-white pt-16 md:pt-28 max-[900px]:pt-28 scroll-mt-28 md:scroll-mt-36 md:-mt-8 max-[900px]:-mt-10">
             <div className="w-full max-w-[1200px] mx-auto px-6 pt-0 -mt-20 pb-5 grid grid-cols-1 md:grid-cols-2 gap-10 max-[900px]:mt-8">
                 {/* Left side */}
                 <div className="max-w-md">

@@ -54,7 +54,7 @@ export default function AboutSection() {
                     {/* title — slide each word up */}
                     <h2 className="text-6xl md:text-7xl font-extrabold leading-[1.05] mb-6">
                         <div className="about-fly">
-                            <div>Creative Technologist</div>
+                            <div className="about-primary-line">Creative Technologist</div>
                             <div>Visual Designer</div>
                             <div>Web Creator</div>
                         </div>
