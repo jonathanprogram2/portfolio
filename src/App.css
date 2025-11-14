@@ -905,7 +905,7 @@ img.grayscale {
 
 @media (max-width: 900px) {
   .chip-chip-work {
-    margin-top: 40rem;
+    margin-top: 5rem;
   }
 }
 
@@ -1092,25 +1092,6 @@ img.grayscale {
   }
 }
 
-@media (max-width: 900px) {
-  .work-wrap {
-    padding-top: 40rem;
-  }
-}
-
-@media (max-width: 900px) {
-  #work.work-wrap {
-    padding-top: -1.5rem !important;
-    margin-top: -10rem;
-  }
-}
-
-
-
-
-
-
-
 
 /* keep workchip visible above */
 #work-chip { z-index: 10; }
@@ -1179,7 +1160,7 @@ img.grayscale {
 
 @media (max-width: 900px) {
   .services-mobile-offset {
-    margin-top: 30rem;
+    margin-top: -8rem;
   }
 }
 
