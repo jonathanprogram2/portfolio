@@ -1101,7 +1101,7 @@ img.grayscale {
 @media (max-width: 900px) {
   #work.work-wrap {
     padding-top: -1.5rem !important;
-    margin-top: -15rem;
+    margin-top: 1rem;
   }
 }
 
