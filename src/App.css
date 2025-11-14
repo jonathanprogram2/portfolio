@@ -1177,6 +1177,12 @@ img.grayscale {
   box-shadow: 0 16px 48px rgba(0,0,0,0.38);
 }
 
+@media (max-width: 900px) {
+  .services-mobile-offset {
+    margin-top: 30rem;
+  }
+}
+
 /* ===================================================== Contact Section ============================================================================ */
 .contact-input {
   width: 100%;
