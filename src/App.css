@@ -1122,29 +1122,12 @@ img.grayscale {
 
 @media (max-width: 900px) {
   .work-wrap {
-    min-height: 100vh;
     padding-top: 7rem;
     padding-bottom: 7rem;
-  }
-  .work-chipbar {
-    margin-top: -3rem;
-  }
-}
-
-@media (max-width: 900px) {
-  .work-wrap {
-    position: relative;
-    width: 100%;
-    min-height: auto;
-    height: auto;
-    padding-top: 0;   /* adjust these two values to taste */
-    padding-bottom: 4.5rem;
     margin-top: 45rem;
   }
-
   .work-chipbar {
-    top: 0;
-    margin-top: 0rem;
+    margin-top: 6rem;
   }
 }
 
