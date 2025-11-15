@@ -1099,7 +1099,7 @@ img.grayscale {
 
 .work-chipbar {
   position: absolute;
-  top: -2.5rem;
+  top: 3rem;
   left: 0;
   right: 0;
   display: flex;

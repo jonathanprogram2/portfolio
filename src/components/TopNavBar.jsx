@@ -171,7 +171,7 @@ export default function TopNav({ anchors = [] }) {
 
                         {/* CENTER BRAND */}
                         <div 
-                            className="justify-self-center min-[901px]:mr-2 max-[900px]:flex max-[900px]:flex-col max-[900px]:items-center max-[900px]:gap-3
+                            className="justify-self-center min-[901px]:mr-2 min-[901px]:-translate-x-16 max-[900px]:flex max-[900px]:flex-col max-[900px]:items-center max-[900px]:gap-3
                             "
                         >
                             <a
