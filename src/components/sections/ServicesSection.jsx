@@ -56,8 +56,8 @@ export default function ServicesSection() {
         <section className="w-full bg-[#000000] scroll-mt-28 md:scroll-mt-40 md:mt-16 text-white services-mobile-offset">
             <div className="w-full max-w-[1200px] mx-auto px-6 pt-0 md:pt-20 pb-1 md:pb-6">
                 {/* label + heading */}
-                <div className="text-center mb-2">
-                    <span className="chip-anim ">
+                <div className="text-center mb-2 services-wrap">
+                    <span className=" chip-anim ">
                         Services
                     </span>
                 </div>
