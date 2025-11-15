@@ -885,6 +885,7 @@ img.grayscale {
   width: min(1200px, 100%);
   border: 1px solid rgba(255,255,255,0.08);
   position: relative;
+  min-height: 420px;
 }
 
 .work-slider-heading {
@@ -1031,6 +1032,7 @@ img.grayscale {
 
   .work-slider-container {
     padding-inline: 0;
+    min-height: 380px;
   }
 
   .work-swiper {
@@ -1097,7 +1099,7 @@ img.grayscale {
 
 .work-chipbar {
   position: absolute;
-  top: 0;
+  top: -2.5rem;
   left: 0;
   right: 0;
   display: flex;
@@ -1113,7 +1115,7 @@ img.grayscale {
 
 .work-wrap { 
   position: relative;
-  width: 100vw;
+  width: 100%;
   background: transparent;
   z-index: 5;
   padding-top: 6rem;
@@ -1122,12 +1124,15 @@ img.grayscale {
 
 @media (max-width: 900px) {
   .work-wrap {
-    padding-top: 7rem;
-    padding-bottom: 7rem;
-    margin-top: 45rem;
+    padding-top: 50rem;
+    padding-bottom: -20rem;
+    margin-top: 0;
   }
+
+  
   .work-chipbar {
-    margin-top: 6rem;
+    top: 0;
+    transform: translateY(50rem);
   }
 }
 
@@ -1167,18 +1172,6 @@ img.grayscale {
 .service-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 16px 48px rgba(0,0,0,0.38);
-}
-
-@media (max-width: 900px) {
-  .services-mobile-offset {
-    margin-top: 7rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .services-mobile-offset {
-    margin-top: 22rem;
-  }
 }
 
 
