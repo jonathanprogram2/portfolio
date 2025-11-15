@@ -48,7 +48,7 @@ export default function App() {
               </div>
 
               {/* SECTION 3 — WORK with HORIZONTAL SLIDES */}
-              <div className="section">
+              <div className="section fp-auto-height">
                 <WorkSection />
               </div>
 
