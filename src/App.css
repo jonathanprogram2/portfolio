@@ -1133,11 +1133,13 @@ img.grayscale {
 
 @media (max-width: 900px) {
   .work-wrap {
+    position: relative;
+    width: 100%;
     min-height: auto;
     height: auto;
-    padding-top: 5rem;   /* adjust these two values to taste */
-    padding-bottom: 4rem;
-    margin-top: 3.5rem;
+    padding-top: 0;   /* adjust these two values to taste */
+    padding-bottom: 4.5rem;
+    margin-top: 2.5rem;
   }
 
   .work-chipbar {
