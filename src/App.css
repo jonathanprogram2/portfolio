@@ -1124,15 +1124,15 @@ img.grayscale {
 
 @media (max-width: 900px) {
   .work-wrap {
-    padding-top: 30rem;
-    padding-bottom: -20rem;
+    padding-top: 8rem;
+    padding-bottom: 4rem;
     margin-top: 0;
   }
 
   
   .work-chipbar {
     top: 0;
-    transform: translateY(30rem);
+    transform: translateY(4rem);
   }
 }
 
