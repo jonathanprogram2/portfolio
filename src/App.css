@@ -1481,3 +1481,10 @@ img.grayscale {
 }
 
 /*-----------------------------------------------------------------------------------------------------------------*/
+@media (max-width: 900px) {
+  .fp-section,
+  .fp-tableCell {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+}

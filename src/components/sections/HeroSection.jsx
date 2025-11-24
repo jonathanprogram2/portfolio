@@ -58,7 +58,7 @@ export default function HeroSection() {
 
 
     return (
-        <section className="relative h-[100svh] w-full overflow-hidden">
+        <section className="relative min-h-[100svh] w-full overflow-hidden">
             {/* Superformula background */}
             <div id="scene-container" className="fixed inset-0 z-10 pointer-events-none" />
             <SuperformulaBackground />
