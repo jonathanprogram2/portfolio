@@ -1497,17 +1497,23 @@ img.grayscale {
 
 
 @media (max-width: 900px) and (orientation: landscape) {
+  .hero-section {
+    min-height: 100vh;
+  }
+
+
   .hero-content {
-    transform: translateY(-6vh);
+    transform: translateY(-10vh);
+    padding-inline: 2rem;
   }
 
   .hero-title {
-    font-size: min(8vw, 64px);
+    font-size: clamp(32px, 5vw, 56px);
     line-height: 1.05;
   }
 
   #scene-container {
-    transform: translateZ(0) scale(0.9);
+    transform: translateY(-6vh) scale(0.75);
     transform-origin: center center;
   }
 
