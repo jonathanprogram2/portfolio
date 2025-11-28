@@ -11,7 +11,7 @@ function FallbackHero({ rX, rY }) {
     return (
         <>
         {/* content */}
-        <div className="relative h-full w-full flex items-center justify-center z-20 fallback-hero">
+        <div className="relative h-full w-full flex items-center justify-center z-20 hero-content">
             <div className="text-center px-6">
                 <motion.h1
                     initial={{ opacity: 0, y: 24 }}
@@ -58,7 +58,7 @@ export default function HeroSection() {
 
 
     return (
-        <section className="relative h-[100svh] w-full overflow-hidden">
+        <section className="relative h-[100svh] w-full overflow-hidden hero-section">
             {/* Superformula background */}
             <div id="scene-container" className="fixed inset-0 z-10 pointer-events-none" />
             <SuperformulaBackground />

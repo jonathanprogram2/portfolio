@@ -1490,24 +1490,37 @@ img.grayscale {
 }
 
 /* --------------------------------------------------------------------------------------------------*/
+.hero-title {
+  font-size: min(12vw, 120px);
+  color: #ffffff;
+}
+
+
 @media (max-width: 900px) and (orientation: landscape) {
-  .fallback-hero .hero-title {
-    font-size: clamp(2.2rem, 6vw, 3.2rem) !important;
+  .hero-content {
+    transform: translateY(-6vh);
+  }
+
+  .hero-title {
+    font-size: min(8vw, 64px);
     line-height: 1.05;
   }
 
-  .fallback-hero {
-    padding-inline: 1.5rem;
+  #scene-container {
+    transform: translateZ(0) scale(0.9);
+    transform-origin: center center;
   }
 
   .about-section {
-    align-items: center !important;
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    align-items: center ;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    min-height: 100vh;
   }
 
   .about-photo {
-    height: 55vh !important;
-    object-position: center top;
+    height: 60vh;
+    object-fit: contain;
+    object-position: center center;
   }
 }
