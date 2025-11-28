@@ -18,7 +18,7 @@ export default function AboutSection() {
                 w-full bg-[#000000] text-white px-8 
                 flex justify-center
                 min-[901px]:min-h-[100vh] min-[901px]:items-center
-                max-[900px]:items-start max-[900px]:pt-31 max-[900px]:pb-24">
+                max-[900px]:items-start max-[900px]:pt-31 max-[900px]:pb-24 about-shell">
             <div className="grid grid-cols-1 lg:grid-cols-2 items-center max-w-7xl gap-12">
                 {/* LEFT: PROFILE IMAGE */}
                 <motion.div

@@ -1488,3 +1488,27 @@ img.grayscale {
     min-height: 0 !important;
   }
 }
+
+/* --------------------------------------------------------------------------------------------------*/
+@media (max-width: 900px) and (orientation: landscape) {
+  .hero-shell {
+    height: auto;
+    min-height: 100vh;
+    padding-top: calc(var(--nav-h) + 12px);
+    padding-bottom: 24px;
+  }
+
+  .hero-shell h1,
+  .hero-shell .headline-gradient {
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    line-height: 1.05;
+  }
+
+  .about-shell {
+    min-height: auto;
+    padding-top: 24px;
+    padding-bottom: 32px;
+    align-items: flex-start;
+  }
+
+}
