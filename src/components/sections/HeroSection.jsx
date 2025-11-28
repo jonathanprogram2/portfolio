@@ -11,14 +11,14 @@ function FallbackHero({ rX, rY }) {
     return (
         <>
         {/* content */}
-        <div className="relative h-full w-full flex items-center justify-center z-20 hero-shell">
+        <div className="relative h-full w-full flex items-center justify-center z-20 fallback-hero">
             <div className="text-center px-6">
                 <motion.h1
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     style={{ rotateX: rX, rotateY: rY, transformStyle: "preserve-3d", fontSize: "min(12vw, 120px)", color: "white" }}
-                    className="font-extrabold leading-[0.9]"
+                    className="font-extrabold leading-[0.9] hero-title"
                 >
                     Designing the
                     <br />

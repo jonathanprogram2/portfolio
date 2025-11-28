@@ -1491,29 +1491,23 @@ img.grayscale {
 
 /* --------------------------------------------------------------------------------------------------*/
 @media (max-width: 900px) and (orientation: landscape) {
-  .hero-shell {
-    height: auto;
-    min-height: 100vh;
-    padding-top: calc(var(--nav-h) + 12px);
-    padding-bottom: 24px;
-  }
-
-  .hero-shell h1,
-  .hero-shell .headline-gradient {
-    font-size: clamp(2.4rem, 6vw, 3.4rem);
+  .fallback-hero .hero-title {
+    font-size: clamp(2.2rem, 6vw, 3.2rem) !important;
     line-height: 1.05;
   }
 
-  .about-shell {
-    min-height: auto;
-    padding-top: 24px;
-    padding-bottom: 32px;
-    align-items: flex-start;
+  .fallback-hero {
+    padding-inline: 1.5rem;
   }
 
-  .sf-mobile-root {
-    transform: translateX(-50%) scale(0.85);
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  .about-section {
+    align-items: center !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
   }
 
+  .about-photo {
+    height: 55vh !important;
+    object-position: center top;
+  }
 }
