@@ -1511,4 +1511,9 @@ img.grayscale {
     align-items: flex-start;
   }
 
+  .sf-mobile-root {
+    transform: translateX(-50%) scale(0.85);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  }
+
 }
