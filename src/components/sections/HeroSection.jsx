@@ -17,7 +17,7 @@ function FallbackHero({ rX, rY }) {
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
-                    style={{ rotateX: rX, rotateY: rY, transformStyle: "preserve-3d", fontSize: "min(12vw, 120px)", color: "white" }}
+                    style={{ rotateX: rX, rotateY: rY, transformStyle: "preserve-3d", color: "white" }}
                     className="font-extrabold leading-[0.9] hero-title"
                 >
                     Designing the
