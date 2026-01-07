@@ -9,25 +9,25 @@ import 'swiper/css/scrollbar';
 // My Projects
 const PROJECTS = [
     {
+        id: 'finance + productivity',
+        title: 'OBEL: Digital Command Center',
+        subtitle: 'Markets, News, Focus — Unified',
+        img: '/assets/projects/obel/obel-dashboard.png',
+        href: 'https://theobel.vercel.app/',
+    },
+    {
+        id: 'finance',
+        title: 'Crypto Sentiment Analyzer',
+        subtitle: 'Headline Sentiment Meets Price Momentum',
+        img: '/assets/projects/crypto-sentiment/crypto-sentiment.png',
+        href: 'https://cryptosenanalyzer.vercel.app/',
+    },
+    {
         id: 'space',
         title: 'Space Tourism Website',
         subtitle: 'Multi-page React Space Tour UI',
         img: '/assets/projects/space/space-hero.png',
         href: 'https://space-tourism-jonathan.vercel.app/',
-    },
-    {
-        id: 'finance',
-        title: 'OBEL: Finance Tracker',
-        subtitle: 'Stock portfolio + analytics dashboard',
-        img: '/assets/projects/obel/obel-dashboard.png',
-        href: 'https://github.com/jonathanprogram2/obel',
-    },
-    {
-        id: 'productivity',
-        title: 'Focus Pocus: Productivity Android App',
-        subtitle: 'Gamified productivity mobile app',
-        img: '/assets/projects/focus-pocus/focus-strip.png',
-        href: 'https://github.com/jonathanprogram2/FocusPocusApp',
     },
 ];
 
