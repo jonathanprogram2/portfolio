@@ -2,262 +2,316 @@ import React, { useState, useEffect, useCallback } from "react";
 import myLogo from "../assets/mylogo.png";
 
 // tiny inline envelope icon (no extra deps)
-function EnvelopeIcon({ className = "w-5 h-5"}) {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-            <path d="M3.5 7.5l7.6 5.1c.56.38 1.24.38 1.8 0l7.6-5.1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-            <rect x="3" y="5" width="18" height="14" rx="2.4" stroke="currentColor" strokeWidth="1.6"/>
-        </svg>
-    );
+function EnvelopeIcon({ className = "w-5 h-5" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M3.5 7.5l7.6 5.1c.56.38 1.24.38 1.8 0l7.6-5.1"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="14"
+        rx="2.4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+    </svg>
+  );
 }
 
 const CONTACT_OFFSET = 300;
 
 export default function TopNav({ anchors = [] }) {
-    const [open, setOpen] = useState(false);
-    const [home, about, work, services, contact] = anchors;
+  const [open, setOpen] = useState(false);
+  const [home, about, work, services, contact] = anchors;
 
-    // close drawer if we resize to desktop
-    useEffect(() => {
-        const onResize = () => { if (window.innerWidth >= 900 && open) setOpen(false); };
-        window.addEventListener("resize", onResize);
-        return () => window.removeEventListener("resize", onResize);
-    }, [open]);
+  // close drawer if we resize to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 900 && open) setOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [open]);
 
-    const handleNav = useCallback((anchor) => {
-        setOpen(false);
+  const handleNav = useCallback(
+    (anchor) => {
+      setOpen(false);
 
-        const contactAnchor = contact || "contact";
-        const workAnchor = work || "work";
+      const contactAnchor = contact || "contact";
+      const workAnchor = work || "work";
 
-        // Contact link from navbar
-        if (anchor === contactAnchor) {
-            const el = 
-                document.querySelector(`[data-anchor="${anchor}"]`) || 
-                document.getElementById(anchor);
+      // Contact link from navbar
+      if (anchor === contactAnchor) {
+        const el =
+          document.querySelector(`[data-anchor="${anchor}"]`) ||
+          document.getElementById(anchor);
 
-            if (el) {
-                const rect = el.getBoundingClientRect();
-                const scrollTop = window.scrollY || window.pageYOffset;
-                const targetY = rect.top + scrollTop - CONTACT_OFFSET;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const scrollTop = window.scrollY || window.pageYOffset;
+          const targetY = rect.top + scrollTop - CONTACT_OFFSET;
 
-                window.scrollTo({
-                    top: targetY,
-                    behavior: "smooth",
-                });
-            }
-
-            window.location.hash = `#${anchor}`;
-            return;
+          window.scrollTo({
+            top: targetY,
+            behavior: "smooth",
+          });
         }
 
-        if (anchor === workAnchor) {
-            const el = document.getElementById(workAnchor);
+        window.location.hash = `#${anchor}`;
+        return;
+      }
 
-            if (el) {
-                const rect = el.getBoundingClientRect();
-                const scrollTop = window.scrollY || window.pageYOffset;
-                const targetY = rect.top + scrollTop - CONTACT_OFFSET;
+      if (anchor === workAnchor) {
+        const el = document.getElementById(workAnchor);
 
-                window.scrollTo({
-                    top: targetY,
-                    behavior: "smooth",
-                });
-            }
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const scrollTop = window.scrollY || window.pageYOffset;
+          const targetY = rect.top + scrollTop - CONTACT_OFFSET;
 
-            window.location.hash = `#${anchor}`;
-            return;
+          window.scrollTo({
+            top: targetY,
+            behavior: "smooth",
+          });
         }
 
-        // use fullPage.js if present; otherwise smooth scroll fallback
-        if (window?.fullpage_api?.moveTo) {
-            window.fullpage_api.moveTo(anchor);
-        } else {
-            const el = 
-                document.querySelector(`[data-anchor="${anchor}"]`) || 
-                document.getElementById(anchor);
+        window.location.hash = `#${anchor}`;
+        return;
+      }
 
-            if (el) {
-                el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
+      // use fullPage.js if present; otherwise smooth scroll fallback
+      if (window?.fullpage_api?.moveTo) {
+        window.fullpage_api.moveTo(anchor);
+      } else {
+        const el =
+          document.querySelector(`[data-anchor="${anchor}"]`) ||
+          document.getElementById(anchor);
 
-            window.location.hash = `#${anchor}`;
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-    }, [contact, work]);
 
+        window.location.hash = `#${anchor}`;
+      }
+    },
+    [contact, work],
+  );
 
-    return (
-        <>
-            {/* Click outside overlay (closes menu of hamburger icon) */}
-            {open && (
-                <button
-                    aria-label="Close menu"
-                    className="fixed inset-0 z-[90] cursor-default"
-                    onClick={() => setOpen(false)}
-                />
-            )}
-            <nav 
-                aria-label="Main navigation"
-                className={[
-                    // MOBILE: centered in the middle of the screen
-                    "fixed z-[100] max-[900px]:left-3 max-[900px]:top-[10%] max-[900px]:translate-y-0",
-                    "max-[900px]:w-[84px]",       // small pill on mobile
-                    // DESKTOP: back to top bar
-                    "min-[901px]:top-[max(12px,env(safe-area-inset-top))] min-[901px]:left-1/2 min-[901px]:-translate-x-1/2 min-[901px]:translate-y-0",
-                    "min-[901px]:w-[min(1100px,92vw)]",
-                ].join(" ")}
-            >
-                {/* Glass pill */}
-                <div className="nav-glass nav-glass--fx rounded-[26px] px-3 py-2.5 max-[900px]:rounded-[999px] max-[900px]:px-2 max-[900px]:py-4 relative jamx-nav jamx-mobile-nav-glass">
-                    <span className="nav-shine pointer-events-none absolute inset-0 rounded-[inherit]" aria-hidden />
+  return (
+    <>
+      {/* Click outside overlay (closes menu of hamburger icon) */}
+      {open && (
+        <button
+          aria-label="Close menu"
+          className="fixed inset-0 z-[90] cursor-default"
+          onClick={() => setOpen(false)}
+        />
+      )}
+      <nav
+        aria-label="Main navigation"
+        className={[
+          // MOBILE: centered in the middle of the screen
+          "fixed z-[100] max-[900px]:left-3 max-[900px]:top-[10%] max-[900px]:translate-y-0",
+          "max-[900px]:w-[84px]", // small pill on mobile
+          // DESKTOP: back to top bar
+          "min-[901px]:top-[max(12px,env(safe-area-inset-top))] min-[901px]:left-1/2 min-[901px]:-translate-x-1/2 min-[901px]:translate-y-0",
+          "min-[901px]:w-[min(1100px,92vw)]",
+        ].join(" ")}
+      >
+        {/* Glass pill */}
+        <div className="nav-glass nav-glass--fx nav-neon rounded-[26px] px-3 py-2.5 max-[900px]:rounded-[999px] max-[900px]:px-2 max-[900px]:py-4 relative jamx-nav jamx-mobile-nav-glass">
+          <span
+            className="nav-shine pointer-events-none absolute inset-0 rounded-[inherit]"
+            aria-hidden
+          />
 
-                    {/* Make this a 3-column GRID */}
-                    <div className="min-[901px]:grid min-[901px]:grid-cols-[auto_1fr_auto] min-[901px]:gap-4 max-[900px]:flex max-[900px]:flex-col max-[900px]:gap-3 max-[900px]:items-center items-center text-white">
-                        {/* LEFT: mobile hamburger / desktop inline menu */}
-                        <div className="flex items-center min-[901px]:gap-3">
-                            {/* mobile hamburger */}
-                            <button
-                                type="button"
-                                aria-label="Toggle menu"
-                                aria-expanded={open}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setOpen((v) => !v);
-                                    
+          {/* Neon edge animation spans */}
+          <span aria-hidden className="nav-neon-edge"></span>
+          <span aria-hidden className="nav-neon-edge"></span>
+          <span aria-hidden className="nav-neon-edge"></span>
+          <span aria-hidden className="nav-neon-edge"></span>
 
-                                }}
-                                className="max-[900px]:flex min-[901px]:hidden h-9 w-9 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/15"
-                            >
-                                <span className="sr-only">Toggle menu</span>
-                                <svg 
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    className="w-6 h-6"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        fill="none"
-                                        stroke="#fff"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M5 17h14M5 12h14M5 7h14"
-                                    />
-                                </svg>
-                            </button>
+          {/* Make this a 3-column GRID */}
+          <div className="min-[901px]:grid min-[901px]:grid-cols-[auto_1fr_auto] min-[901px]:gap-4 max-[900px]:flex max-[900px]:flex-col max-[900px]:gap-3 max-[900px]:items-center items-center text-white">
+            {/* LEFT: mobile hamburger / desktop inline menu */}
+            <div className="flex items-center min-[901px]:gap-3">
+              {/* mobile hamburger */}
+              <button
+                type="button"
+                aria-label="Toggle menu"
+                aria-expanded={open}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen((v) => !v);
+                }}
+                className="max-[900px]:flex min-[901px]:hidden h-9 w-9 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/15"
+              >
+                <span className="sr-only">Toggle menu</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="w-6 h-6"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="none"
+                    stroke="#fff"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 17h14M5 12h14M5 7h14"
+                  />
+                </svg>
+              </button>
 
-                            {/* Desktop links (keep id="menu" for fullpage.js) */}
-                            <ul id="menu" className="hidden min-[901px]:flex items-center gap-6">
-                                <li data-menuanchor={about}>
-                                    <a href={`#${about}`} className="nav-link glow-link"
-                                        onClick={(e)=>{ e.preventDefault(); handleNav(about); }}>
-                                        ABOUT
-                                    </a>
-                                </li>
-                                <li data-menuanchor={work}>
-                                    <a href={`#${work}`} className="nav-link glow-link"
-                                    onClick={(e)=>{ e.preventDefault(); handleNav(work); }}>
-                                        WORK
-                                    </a>
-                                </li>
-                                <li data-menuanchor={services}>
-                                    <a href={`#${services}`} className="nav-link glow-link"
-                                        onClick={(e)=>{ e.preventDefault(); handleNav(services); }}>
-                                        SERVICES
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+              {/* Desktop links (keep id="menu" for fullpage.js) */}
+              <ul
+                id="menu"
+                className="hidden min-[901px]:flex items-center gap-6"
+              >
+                <li data-menuanchor={about}>
+                  <a
+                    href={`#${about}`}
+                    className="nav-link glow-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNav(about);
+                    }}
+                  >
+                    ABOUT
+                  </a>
+                </li>
+                <li data-menuanchor={work}>
+                  <a
+                    href={`#${work}`}
+                    className="nav-link glow-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNav(work);
+                    }}
+                  >
+                    WORK
+                  </a>
+                </li>
+                <li data-menuanchor={services}>
+                  <a
+                    href={`#${services}`}
+                    className="nav-link glow-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNav(services);
+                    }}
+                  >
+                    SERVICES
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-                        {/* CENTER BRAND */}
-                        <div 
-                            className="justify-self-center min-[901px]:mr-2 min-[901px]:-translate-x-16 max-[900px]:flex max-[900px]:flex-col max-[900px]:items-center max-[900px]:gap-3
+            {/* CENTER BRAND */}
+            <div
+              className="justify-self-center min-[901px]:mr-2 min-[901px]:-translate-x-16 max-[900px]:flex max-[900px]:flex-col max-[900px]:items-center max-[900px]:gap-3 mt-[10]
                             "
-                        >
-                            <a
-                                href={`#${home || "home"}`}
-                                onClick={(e)=>{ e.preventDefault(); handleNav(home || "home"); 
+            >
+              <a
+                href={`#${home || "home"}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNav(home || "home");
+                }}
+                className="hidden min-[901px]:inline-block brand font-brand font-extrabold tracking-wider text-white/95 "
+              >
+                JAMX <span className="opacity-85 tracking-wider">STUDIOS</span>
+              </a>
 
-                                }}
-                                className="hidden min-[901px]:inline-block brand font-brand font-extrabold tracking-[0.06em] text-white/95 "
-                            >
-                                JAMX <span className="opacity-85">STUDIOS</span>     
-                            </a>
-
-                            {/* Mobile Logo */}
-                            <img
-                                src={myLogo}
-                                alt="JAMX Studios logo"
-                                className="
+              {/* Mobile Logo */}
+              <img
+                src={myLogo}
+                alt="JAMX Studios logo"
+                className="
                                     max-[900px]:block min-[901px]:hidden
                                     w-10 h-10 object-contain
                                 "
-                            />
+              />
 
-                            {/* mobile envelope icon */}
-                            <button
-                                onClick={() => handleNav(contact || "contact")}
-                                aria-label="Contact"
-                                className="min-[901px]:hidden inline-flex h-7 w-7 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-teal-300"
-                            >
-                                <EnvelopeIcon className="w-5 h-5" />
-                            </button>
-                        </div>
+              {/* mobile envelope icon */}
+              <button
+                onClick={() => handleNav(contact || "contact")}
+                aria-label="Contact"
+                className="min-[901px]:hidden inline-flex h-7 w-7 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-teal-300"
+              >
+                <EnvelopeIcon className="w-5 h-5" />
+              </button>
+            </div>
 
-                        {/* RIGHT: CTA */}
-                        <div className="justify-self-end max-[900px]:hidden">
-                            <a
-                                data-menuanchor={contact}
-                                href={`#${contact || "contact"}`}
-                                onClick={(e)=>{ e.preventDefault(); handleNav(contact || "contact"); }}
-                                className="nav-cta pulse-cta px-4 md:px-5 py-2 text-white font-semibold rounded-full"
-                            >
-                                <span className="icon-glow">Contact me</span>
-                            </a>
+            {/* RIGHT: CTA */}
+            <div className="justify-self-end max-[900px]:hidden">
+              <a
+                data-menuanchor={contact}
+                href={`#${contact || "contact"}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNav(contact || "contact");
+                }}
+                className="nav-cta pulse-cta px-4 md:px-5 py-2 text-white font-semibold rounded-full"
+              >
+                <span className="icon-glow">Contact me</span>
+              </a>
+            </div>
+          </div>
 
-                            
-                        </div>
-                    </div>
-                        
-
-                    {/* mobile dropdown */}
-                    {open && (
-                        <div 
-                            className="
-                                min-[901px]:hidden absolute left-full top-0 ml-3
-                                rounded-2xl bg-black/80 border border-white/15 backdrop-blur-md p-2
+          {/* mobile dropdown */}
+          {open && (
+            <div
+              className="
+                                 jamx-mobile-dropdown
+      min-[901px]:hidden absolute left-full top-0 ml-3
+      rounded-2xl bg-black/80 border border-white/15 backdrop-blur-md p-2
+      shadow-[0_18px_50px_rgba(0,0,0,0.55)]
                             "
-                        >
-                            <ul className="flex flex-col">
-                                {[about, work, services].filter(Boolean).map((a) => (
-                                    <li key={a}>
-                                        <button
-                                            onClick={() => handleNav(a)}
-                                            className="
+            >
+              <ul className="flex flex-col">
+                {[about, work, services].filter(Boolean).map((a) => (
+                  <li key={a}>
+                    <button
+                      onClick={() => handleNav(a)}
+                      className="
                                                 w-full text-left px-3 py-3 rounded-xl
                                                 text-[14px] font-semibold uppercase
                                                 text-white/90 hover:text-white hover:bg-white/10
                                             "
-                                        >
-                                            {a}
-                                        </button>
-                                    </li>
-                                ))}
-                                {contact && (
-                                    <li>
-                                        <button
-                                            onClick={() => handleNav(contact)}
-                                            className="w-full text-left px-3 py-3 rounded-xl text-[14px] font-semibold uppercase text-white/90 hover:text-white hover:bg-white/10"
-                                        >
-                                            {contact}
-                                        </button>
-                                    </li>
-                                )}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            </nav>
-        </>
-    );
+                    >
+                      {a}
+                    </button>
+                  </li>
+                ))}
+                {contact && (
+                  <li>
+                    <button
+                      onClick={() => handleNav(contact)}
+                      className="w-full text-left px-3 py-3 rounded-xl text-[14px] font-semibold uppercase text-white/90 hover:text-white hover:bg-white/10"
+                    >
+                      {contact}
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+      </nav>
+    </>
+  );
 }
